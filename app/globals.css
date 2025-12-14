@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Midnight Pro Theme - Forced Dark Mode Aesthetic */
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 15, 23, 42;
+  /* midnight-900 */
+  --background-end-rgb: 2, 6, 23;
+  /* midnight-950 */
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: radial-gradient(circle at top center, #1e293b 0%, #0f172a 40%, #020617 100%);
+  min-height: 100vh;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Midnight Card Utility */
+  .card-midnight {
+    background-color: #1e293b;
+    /* midnight-800 */
+    border: 1px solid #334155;
+    /* midnight-700 */
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  }
+
+  /* Gold Glow Utility */
+  .glow-gold {
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.3));
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Card styles for study and trade cards */
+.card {
+  @apply bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 transition-all hover:shadow-lg;
+}
+
+/* Bottom navigation safe area for mobile devices */
+.bottom-nav {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+/* Hamburger Menu - Force Opaque Background */
+.fixed.right-0.h-full.w-80 {
+  background-color: #0a0a0f !important;
+  background-image: none !important;
+}

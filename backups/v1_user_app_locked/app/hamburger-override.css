@@ -1,0 +1,11 @@
+/* Hamburger Menu Override - Force Opaque Background */
+[class*="hamburger-menu"],
+[class*="slide-in"] {
+    background-color: #0a0a0f !important;
+    background-image: none !important;
+}
+
+/* Ensure menu sidebar is completely opaque */
+nav>div[class*="fixed"][class*="right-0"] {
+    background-color: #0a0a0f !important;
+}
