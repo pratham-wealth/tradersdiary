@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { AddPatternModal, PatternInitialValues } from '@/components/add-pattern-modal';
 import { PatternActions } from '@/components/admin/content-actions';
-import { BarChart2, Flame, Plus, Sparkles } from 'lucide-react';
+import { BarChart2, Flame, Plus } from 'lucide-react';
 import Image from 'next/image';
 
 interface AdminPatternsClientProps {

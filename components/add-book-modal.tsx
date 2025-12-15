@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { createBook } from '@/app/dashboard/library/actions';
 import { updateGlobalBook } from '@/app/dashboard/admin/actions';
 import { X, Upload, FileText, Image as ImageIcon, Loader2 } from 'lucide-react';
