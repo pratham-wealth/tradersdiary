@@ -463,3 +463,64 @@ export async function getAllPatterns() {
         return { patterns: [], error: error.message };
     }
 }
+
+// -- Update Actions --
+
+export async function updateGlobalBook(id: string, params: Partial<CreateBookParams>) {
+    try {
+        const supabase = await createAdminClient();
+
+        // Prepare update object
+        const updates: any = {};
+        if (params.title) updates.title = params.title;
+        if (params.author) updates.author = params.author;
+        if (params.description) updates.description = params.description;
+        if (params.pdfPath) updates.pdf_url = params.pdfPath;
+        if (params.coverUrl) updates.cover_url = params.coverUrl;
+        if (params.accessLevel) updates.access_level = params.accessLevel;
+        if (params.price !== undefined) updates.price = params.price;
+        if (params.priceUsd !== undefined) updates.price_usd = params.priceUsd;
+
+        const { error } = await supabase
+            .from('user_books')
+            .update(updates)
+            .eq('id', id);
+
+        if (error) throw error;
+
+        revalidatePath('/dashboard/admin/books');
+        return { success: true };
+    } catch (error: any) {
+        return { error: error.message };
+    }
+}
+
+export async function updatePattern(id: string, params: Partial<CreatePatternParams>) {
+    try {
+        const supabase = await createAdminClient();
+
+        const updates: any = {};
+        if (params.type) updates.type = params.type;
+        if (params.groupName) updates.group_name = params.groupName;
+        if (params.name) updates.name = params.name;
+        if (params.description) updates.description = params.description;
+        if (params.understanding) updates.understanding = params.understanding;
+        if (params.tradingRules) updates.trading_rules = params.tradingRules;
+        if (params.successRatio !== undefined) updates.success_ratio = params.successRatio;
+        if (params.imageUrl) updates.image_url = params.imageUrl;
+        if (params.videoUrl !== undefined) updates.video_url = params.videoUrl;
+        if (params.isPremium !== undefined) updates.is_premium = params.isPremium;
+
+        const { error } = await supabase
+            .from('learning_patterns')
+            .update(updates)
+            .eq('id', id);
+
+        if (error) throw error;
+
+        revalidatePath('/dashboard/admin/patterns');
+        return { success: true };
+    } catch (error: any) {
+        return { error: error.message };
+    }
+}
