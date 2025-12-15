@@ -1,3 +1,5 @@
+'use client';
+
 import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { getStudies } from '@/app/dashboard/studies/actions';
