@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import { WatchItem } from './watch-card';
 import { WatchList } from './watch-list';
 import { AddWatchForm } from './add-watch-form';
