@@ -1,12 +1,13 @@
 'use client';
 
+import { Suspense } from 'react';
 import { verifyOTP, resendOTP } from './actions';
 import { useState, useRef, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'sonner';
 import { Mail, Shield, ArrowRight, RefreshCw, TrendingUp } from 'lucide-react';
 
-export default function VerifyOTPPage() {
+function VerifyOTPContent() {
     const searchParams = useSearchParams();
     const email = searchParams?.get('email') || '';
     const [loading, setLoading] = useState(false);
@@ -198,5 +199,13 @@ export default function VerifyOTPPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function VerifyOTPPage() {
+    return (
+        <Suspense fallback={<div className="min-h-screen bg-midnight-950 flex items-center justify-center text-gold-400">Loading...</div>}>
+            <VerifyOTPContent />
+        </Suspense>
     );
 }

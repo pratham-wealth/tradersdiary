@@ -1,7 +1,4 @@
-'use client';
-
-// Rebuild trigger
-
+import { Suspense } from 'react';
 import { useState, useEffect } from 'react';
 import { getStudies } from '@/app/dashboard/studies/actions';
 import { AddStudyForm } from '@/components/add-study-form';
@@ -11,24 +8,11 @@ import { Study, StudyCard } from '@/components/study-card';
 import { BookOpen, CheckCircle, Activity } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 
-export default function StudiesPageClient({ initialStudies, strategies }: { initialStudies: Study[], strategies: Strategy[] }) {
-    // ...
-    // ... (rest of logic)
-    // ...
+function StudiesPageContent({ initialStudies, strategies }: { initialStudies: Study[], strategies: Strategy[] }) {
     const searchParams = useSearchParams();
     const deepLinkId = searchParams.get('id');
 
     const [typeFilter, setTypeFilter] = useState('all');
-    // Default to 'ACTIVE' unless deep linking to a completed one, but for now lets default ALL or ACTIVE.
-    // If deep linking, we want to show ALL to ensure it's found? Or just simple filtering.
-    // Let's implement client-side status filtering for speed/simplicity or server side.
-    // Given the props, we might need to rely on client filtering if we have all data, or fetch new.
-    // The initialProps likely has ALL studies or just ACTIVE based on the server page.
-    // Let's assume server page fetches ALL for now to make this easier, OR we fetch on tab change.
-
-    // Simplest: Client side filtering if dataset is small. 
-    // Or: Param based.
-
     const [statusFilter, setStatusFilter] = useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
     const [studies, setStudies] = useState(initialStudies);
     const [watchFormStudy, setWatchFormStudy] = useState<Study | null>(null);
@@ -36,9 +20,6 @@ export default function StudiesPageClient({ initialStudies, strategies }: { init
     // Deep link effect
     useEffect(() => {
         if (deepLinkId) {
-            // Include ALL status if deep linking to find it
-            // Assuming initialStudies has everything? Or we might need to fetch specific.
-            // For now, let's just highlight it if present.
             const target = studies.find(s => s.id === deepLinkId);
             if (target && target.status === 'COMPLETED') {
                 setStatusFilter('COMPLETED');
@@ -48,8 +29,6 @@ export default function StudiesPageClient({ initialStudies, strategies }: { init
 
     async function handleFilterChange(newType: string) {
         setTypeFilter(newType);
-        // We'll filter client side for status, but server for type? 
-        // Let's stick to existing pattern: refetch.
         const result = await getStudies(newType, statusFilter);
         if (result.data) {
             setStudies(result.data);
@@ -58,25 +37,8 @@ export default function StudiesPageClient({ initialStudies, strategies }: { init
 
     async function handleStatusTabChange(newStatus: 'ACTIVE' | 'COMPLETED') {
         setStatusFilter(newStatus);
-        // Refetch with new status
-        // const result = await getStudies(typeFilter, newStatus); 
-        // Ideally we update the server action to accept status.
-        // Assuming we did that in previous step.
-        // But for now, let's just filter the 'studies' array client side if we have all?
-        // No, best to re-fetch to be consistent.
-
-        // Let's filter client-side for immediate responsiveness if we assume we have "ALL" data? 
-        // BUT current getStudies might filter.
-
-        // Let's call server.
-        // Note: I commented out the SQL filter in actions.ts, so currently it returns ALL.
-        // So client-side filtering is actually cleaner until migration runs! 
-        // THIS IS SAFER.
     }
 
-    // Derived state for display
-    // const displayedStudies = studies.filter(s => s.status === statusFilter || (!s.status && statusFilter === 'ACTIVE')); 
-    // Handle legacy data where status might be null -> ACTIVE
     const displayedStudies = studies.filter(s => {
         const sStatus = s.status || 'ACTIVE';
         if (deepLinkId && s.id === deepLinkId) return true; // Always show deep linked
@@ -204,5 +166,13 @@ export default function StudiesPageClient({ initialStudies, strategies }: { init
                 </>
             )}
         </div>
+    );
+}
+
+export default function StudiesPageClient(props: { initialStudies: Study[], strategies: Strategy[] }) {
+    return (
+        <Suspense fallback={<div className="text-white text-center p-8">Loading studies...</div>}>
+            <StudiesPageContent {...props} />
+        </Suspense>
     );
 }
