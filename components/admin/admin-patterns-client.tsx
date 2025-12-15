@@ -6,8 +6,23 @@ import { PatternActions } from '@/components/admin/content-actions';
 import { BarChart2, Flame, Plus } from 'lucide-react';
 import Image from 'next/image';
 
+interface Pattern {
+    id: string;
+    type: 'CHART' | 'CANDLESTICK';
+    group_name: string;
+    name: string;
+    description: string;
+    understanding: string;
+    trading_rules: string;
+    success_ratio: number;
+    video_url: string | null;
+    image_url: string | null;
+    is_premium: boolean;
+    created_at: string;
+}
+
 interface AdminPatternsClientProps {
-    patterns: any[];
+    patterns: Pattern[];
 }
 
 export function AdminPatternsClient({ patterns }: AdminPatternsClientProps) {
