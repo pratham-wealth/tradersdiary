@@ -67,15 +67,29 @@ export function PDFReader({ url, title, userEmail, onClose }: PDFReaderProps) {
                             className="w-full h-full block"
                         >
                             <div className="flex flex-col items-center justify-center h-full text-slate-400 p-8 text-center bg-slate-100">
-                                <p className="mb-4">Unable to display PDF directly in this browser.</p>
-                                <a
-                                    href={url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                                >
-                                    Download PDF
-                                </a>
+                                <div className="max-w-xs bg-white p-6 rounded-xl shadow-lg border border-slate-200">
+                                    <p className="font-bold text-slate-800 mb-2">PDF Preview Not Supported</p>
+                                    <p className="text-xs text-slate-500 mb-6">Mobile browsers often block embedded PDFs. You can view it using Google's engine or download it.</p>
+
+                                    <div className="flex flex-col gap-3">
+                                        <a
+                                            href={`https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="px-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors font-bold text-sm"
+                                        >
+                                            View with Google Engine
+                                        </a>
+                                        <a
+                                            href={url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="px-4 py-3 bg-slate-100 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-200 transition-colors font-bold text-sm"
+                                        >
+                                            Download / Open Externally
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </object>
 

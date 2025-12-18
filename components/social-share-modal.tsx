@@ -30,14 +30,11 @@ export function SocialShareModal({ isOpen, onClose, children, title = "Trade Set
             await new Promise(resolve => setTimeout(resolve, 500));
 
             const canvas = await html2canvas(hiddenCardRef.current, {
-                backgroundColor: '#0f172a', // Enforce dark background
-                scale: 2, // Good quality
+                backgroundColor: '#020617', // Enforce dark background
+                scale: 3, // High quality for download
                 useCORS: true,
                 logging: false,
-                width: 1200, // Enforce specific export dimensions
-                height: 630, // Standard social card ratio
-                windowWidth: 1200,
-                windowHeight: 630
+                // Remove fixed width/height to allow natural card size capture
             });
 
             canvas.toBlob(async (blob) => {
@@ -274,13 +271,14 @@ export function SocialShareModal({ isOpen, onClose, children, title = "Trade Set
                     <p className="text-center text-xs text-slate-500 mt-4">This is how your share will look.</p>
                 </div>
 
-                {/* HIDDEN CAPTURE CONTAINER (Fixed Width 1200px) */}
+                {/* HIDDEN CAPTURE CONTAINER (Dynamic Height, Fixed Width for consistency) */}
                 <div style={{ position: 'fixed', top: '-9999px', left: '-9999px' }}>
                     <div
                         ref={hiddenCardRef} // Target for html2canvas
                         style={{
-                            width: '1200px',
-                            height: '630px', // Standard OG Size
+                            width: '800px', // Standard width for mobile/vertical sharing
+                            // height: 'auto', // Let height be natural
+                            minHeight: '600px',
                             background: '#020617', // Slate-950
                             padding: '40px',
                             display: 'flex',

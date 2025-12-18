@@ -45,28 +45,28 @@ export default async function Image({ params }: { params: { id: string } }) {
                 padding: '40px',
                 fontFamily: '"DM Sans", sans-serif',
             }}>
-                {/* Background Decoration */}
+                {/* Background Decoration - Subtler */}
                 <div style={{
                     position: 'absolute',
                     top: '-50%',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    width: '1000px',
-                    height: '1000px',
-                    background: `radial-gradient(circle, ${isLong ? 'rgba(16, 185, 129, 0.1)' : 'rgba(244, 63, 94, 0.1)'} 0%, transparent 70%)`,
+                    width: '1200px',
+                    height: '1200px',
+                    background: `radial-gradient(circle, ${isLong ? 'rgba(16, 185, 129, 0.08)' : 'rgba(244, 63, 94, 0.08)'} 0%, transparent 60%)`,
                     zIndex: 0
                 }} />
 
                 {/* Main Centered Card Container */}
                 <div style={{
-                    width: '900px', // Constrained width
+                    width: '800px', // Matches the Modal width more closely
                     display: 'flex',
                     flexDirection: 'column',
-                    backgroundColor: cardBg,
-                    borderRadius: '32px',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.7)',
-                    padding: '50px',
+                    backgroundColor: '#1e293b',
+                    borderRadius: '24px',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 40px 80px -20px rgba(0, 0, 0, 0.6)',
+                    padding: '40px',
                     position: 'relative',
                     zIndex: 10,
                 }}>
