@@ -1,5 +1,6 @@
 import { Users, CreditCard, BookOpen, Activity } from 'lucide-react';
 import Link from 'next/link';
+import { AnnouncementManager } from './announcement-manager';
 
 export default function AdminDashboardPage() {
     return (
@@ -8,6 +9,9 @@ export default function AdminDashboardPage() {
                 <h2 className="text-3xl font-bold text-white mb-2">Admin Command Center</h2>
                 <p className="text-slate-400">Manage users, content, and revenue from one place.</p>
             </div>
+
+            {/* Announcement Manager */}
+            <AnnouncementManager />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* Users Card */}

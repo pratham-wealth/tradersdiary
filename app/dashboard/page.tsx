@@ -1,4 +1,6 @@
 import { getTodaysDiary, getDashboardStats, getUserSettings } from './actions';
+import { getLatestAnnouncement } from './announcements/actions';
+import { AnnouncementBanner } from '@/components/announcement-banner';
 import DashboardFocusList from '@/components/dashboard-focus-list';
 import { DashboardMarketOutlook } from '@/components/dashboard-market-outlook';
 import { DailyRoutine } from '@/components/daily-routine';
@@ -6,10 +8,11 @@ import { DashboardTimeDisplay } from '@/components/dashboard-time-display';
 
 export default async function DashboardPage() {
     // Force rebuild
-    const [diaryResult, stats, settingsResult] = await Promise.all([
+    const [diaryResult, stats, settingsResult, announcement] = await Promise.all([
         getTodaysDiary(),
         getDashboardStats(),
         getUserSettings(),
+        getLatestAnnouncement(),
     ]);
 
     const diary = diaryResult.data;
@@ -23,6 +26,11 @@ export default async function DashboardPage() {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
+            {/* System Announcement Banner */}
+            <div className="mb-[-20px]">
+                <AnnouncementBanner announcement={announcement} />
+            </div>
+
             {/* Header Section */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
