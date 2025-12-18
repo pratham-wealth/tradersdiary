@@ -1,45 +1,49 @@
+'use client';
+
 import Link from 'next/link';
-import { TrendingUp, ArrowRight } from 'lucide-react';
+import { TrendingUp, ArrowRight, Menu } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export function LandingNavbar() {
+    const [scrolled, setScrolled] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 20);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     return (
-        <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-midnight-950/80 backdrop-blur-md">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-midnight-950 border-b border-white/5 py-4 shadow-xl transition-all duration-300">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div className="flex items-center justify-between">
                     {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="p-1.5 bg-gold-400/10 border border-gold-400/20 rounded-lg">
+                    <Link href="/" className="flex items-center gap-3 group">
+                        <div className="p-2 bg-gradient-to-br from-gold-400/20 to-gold-600/20 border border-gold-400/30 rounded-xl group-hover:scale-105 transition-transform">
                             <TrendingUp className="w-5 h-5 text-gold-400" />
                         </div>
-                        <span className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                        <span className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent group-hover:to-white transition-all">
                             Traders Diary
                         </span>
                     </Link>
 
                     {/* Desktop Nav */}
-                    <div className="hidden md:flex items-center gap-8">
-                        <Link href="#features" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                            Features
-                        </Link>
-                        <Link href="#how-it-works" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                            How it Works
-                        </Link>
-                        <Link href="#pricing" className="text-sm font-medium text-slate-400 hover:text-white transition-colors">
-                            Pricing
-                        </Link>
+                    <div className="hidden md:flex items-center gap-8 bg-white/5 px-6 py-2 rounded-full border border-white/5 backdrop-blur-md">
+                        <Link href="#features" className="text-sm font-medium text-slate-400 hover:text-gold-400 transition-colors">Features</Link>
+                        <Link href="#how-it-works" className="text-sm font-medium text-slate-400 hover:text-gold-400 transition-colors">How it Works</Link>
                     </div>
 
                     {/* Auth Buttons */}
                     <div className="flex items-center gap-4">
                         <Link
                             href="/auth/login"
-                            className="text-sm font-medium text-slate-300 hover:text-white transition-colors hidden sm:block"
+                            className="text-sm font-medium text-slate-300 hover:text-white transition-colors hidden sm:block px-4 py-2 hover:bg-white/5 rounded-lg"
                         >
                             Sign In
                         </Link>
                         <Link
                             href="/auth/register"
-                            className="flex items-center gap-2 px-4 py-2 bg-gold-400 text-black text-sm font-bold rounded-full hover:bg-gold-500 transition-all shadow-lg shadow-gold-400/20"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-gold-400 text-black text-sm font-bold rounded-full hover:bg-gold-500 transition-all shadow-[0_0_20px_-5px_rgba(251,191,36,0.3)] hover:scale-105"
                         >
                             Get Started <ArrowRight className="w-4 h-4" />
                         </Link>

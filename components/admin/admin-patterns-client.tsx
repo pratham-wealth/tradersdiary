@@ -14,11 +14,17 @@ interface Pattern {
     description: string;
     understanding: string;
     trading_rules: string;
-    success_ratio: number;
+    success_ratio: string | number;
     video_url: string | null;
     image_url: string | null;
     is_premium: boolean;
     created_at: string;
+    // New Fields
+    market_context?: string;
+    invalidation_conditions?: string;
+    timeframe_suitability?: string;
+    volume_confirmation?: string;
+    difficulty_level?: string;
 }
 
 interface AdminPatternsClientProps {
@@ -37,11 +43,16 @@ export function AdminPatternsClient({ patterns }: AdminPatternsClientProps) {
             name: pattern.name,
             description: pattern.description,
             understanding: pattern.understanding,
-            tradingRules: pattern.trading_rules,
-            successRatio: pattern.success_ratio,
+            tradingRules: pattern.trading_rules, // Corrected
+            successRatio: String(pattern.success_ratio),
             videoUrl: pattern.video_url,
             imageUrl: pattern.image_url,
-            isPremium: pattern.is_premium
+            isPremium: pattern.is_premium,
+            marketContext: pattern.market_context,
+            invalidationConditions: pattern.invalidation_conditions,
+            timeframeSuitability: pattern.timeframe_suitability,
+            volumeConfirmation: pattern.volume_confirmation,
+            difficultyLevel: pattern.difficulty_level
         });
         setIsModalOpen(true);
     };

@@ -16,6 +16,7 @@ interface AddTradeFormProps {
         target_price: number | null;
         strategy_id?: string;
         study_id?: string;
+        created_at?: string; // Added to capture Watchlist Date
     };
     triggerClassName?: string;
     triggerLabel?: string;
@@ -123,6 +124,32 @@ export function AddTradeForm({ strategies, studies = [], watchListId, watchItem,
                             placeholder="0.00"
                             className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-long focus:border-transparent"
                             aria-label="Entry Price"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Trigger Date (Entry)
+                        </label>
+                        <input
+                            type="datetime-local"
+                            name="entryDate"
+                            defaultValue={watchItem ? new Date().toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16)}
+                            className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-long focus:border-transparent"
+                            aria-label="Trigger Date"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Radar Date (Optional)
+                        </label>
+                        <input
+                            type="datetime-local"
+                            name="radarDate"
+                            defaultValue={watchItem?.created_at ? new Date(watchItem.created_at).toISOString().slice(0, 16) : ''}
+                            className="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-long focus:border-transparent"
+                            aria-label="Radar Date"
                         />
                     </div>
 

@@ -61,6 +61,8 @@ export async function addTrade(formData: FormData) {
     const strategyId = formData.get('strategyId') as string || null;
     const watchListId = formData.get('watchListId') as string || null;
     const studyId = formData.get('studyId') as string || null;
+    const radarDate = formData.get('radarDate') as string || null;
+    const entryDate = formData.get('entryDate') as string || null; // Trigger Date
 
     const { data, error } = await supabase.from('trades').insert({
         user_id: user.id,
@@ -74,6 +76,8 @@ export async function addTrade(formData: FormData) {
         watch_list_id: watchListId,
         study_id: studyId,
         outcome: 'OPEN',
+        radar_date: radarDate ? new Date(radarDate).toISOString() : null,
+        entry_date: entryDate ? new Date(entryDate).toISOString() : new Date().toISOString(),
     }).select().single();
 
     if (error) {
@@ -95,6 +99,8 @@ export async function closeTrade(id: string, formData: FormData) {
 
     const exitPrice = parseFloat(formData.get('exitPrice') as string);
     const outcome = formData.get('outcome') as string;
+    const exitDate = formData.get('exitDate') as string; // Optional manual override
+    const modNote = formData.get('mod_note') as string;
 
     // Get the trade to calculate P&L
     const { data: trade } = await supabase
@@ -116,13 +122,20 @@ export async function closeTrade(id: string, formData: FormData) {
         pnlPoints = trade.entry_price - exitPrice;
     }
 
+    // Append closing note if provided
+    let updatedNotes = trade.notes || '';
+    if (modNote && modNote.trim()) {
+        updatedNotes = updatedNotes ? `${updatedNotes}\n\n[Closing Note]: ${modNote}` : `[Closing Note]: ${modNote}`;
+    }
+
     const { error } = await supabase
         .from('trades')
         .update({
             exit_price: exitPrice,
-            exit_date: new Date().toISOString(),
+            exit_date: exitDate ? new Date(exitDate).toISOString() : new Date().toISOString(),
             outcome,
             pnl_points: pnlPoints,
+            notes: updatedNotes,
         })
         .eq('id', id)
         .eq('user_id', user.id);
@@ -130,9 +143,6 @@ export async function closeTrade(id: string, formData: FormData) {
     if (error) {
         return { error: error.message };
     }
-
-    revalidatePath('/dashboard/journal');
-    revalidatePath('/dashboard');
 
     revalidatePath('/dashboard/journal');
     revalidatePath('/dashboard');
@@ -155,6 +165,8 @@ export async function updateTrade(id: string, formData: FormData) {
     const notes = formData.get('notes') as string;
     const strategyId = formData.get('strategyId') as string || null;
     const studyId = formData.get('studyId') as string || null;
+    const radarDate = formData.get('radarDate') as string || null;
+    const entryDate = formData.get('entryDate') as string || null;
 
     const { error } = await supabase
         .from('trades')
@@ -167,6 +179,8 @@ export async function updateTrade(id: string, formData: FormData) {
             notes,
             strategy_id: strategyId,
             study_id: studyId,
+            radar_date: radarDate ? new Date(radarDate).toISOString() : null,
+            ...(entryDate && { entry_date: new Date(entryDate).toISOString() }),
         })
         .eq('id', id)
         .eq('user_id', user.id);

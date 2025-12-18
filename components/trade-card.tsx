@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { closeTrade, deleteTrade, updateTrade } from '../app/dashboard/journal/actions';
-import { TrendingUp, TrendingDown, X, Edit2, Trash2, FileText } from 'lucide-react';
-import { ShareWithSocials } from './share-with-socials';
+import { Edit2, Trash2, TrendingUp, TrendingDown, Target, Shield, Clock, AlertTriangle, CheckCircle2, XCircle, Share2, MoreHorizontal, X, FileText } from 'lucide-react';
+import html2canvas from 'html2canvas';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { TradeReportPDF } from './trade-report-pdf';
+import { SocialShareModal } from './social-share-modal';
 
 export interface Trade {
     id: string;
@@ -23,6 +24,9 @@ export interface Trade {
     strategy: { id: string; name: string } | null;
     watch_list: { id: string } | null;
     study: { id: string; title: string } | null;
+    radar_date?: string | null; // Added
+    strategy_id?: string | null;
+    study_id?: string | null;
 }
 
 interface TradeCardProps {
@@ -33,6 +37,7 @@ export function TradeCard({ trade }: TradeCardProps) {
     const [showCloseForm, setShowCloseForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
 
     const isOpen = trade.outcome === 'OPEN';
     const isLong = trade.direction === 'LONG';
@@ -40,11 +45,10 @@ export function TradeCard({ trade }: TradeCardProps) {
     const isLoss = trade.outcome === 'LOSS';
 
     // Generate share text for closed trades
-    const shareText = !isOpen && trade.pnl_points
-        ? `Just closed a trade on $${trade.instrument}! ${trade.pnl_points > 0 ? '🚀' : '📉'
-        } P&L: ${trade.pnl_points > 0 ? '+' : ''}${trade.pnl_points} points. ${isWin ? 'Target Hit! 🎯' : 'Stop Hit.'
-        } Logged via @TradeNoteApp`
-        : '';
+    function handleShare(e: React.MouseEvent) {
+        e.stopPropagation();
+        setShowShareModal(true);
+    }
 
     async function handleClose(formData: FormData) {
         setLoading(true);
@@ -111,9 +115,31 @@ export function TradeCard({ trade }: TradeCardProps) {
                         </div>
                     </div>
 
+                    {/* New Date Fields for Edit */}
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="text-xs font-semibold text-gray-500 uppercase">Trigger Date (Entry)</label>
+                            <input
+                                type="datetime-local"
+                                name="entryDate"
+                                defaultValue={new Date(trade.entry_date).toISOString().slice(0, 16)}
+                                className="w-full mt-1 p-2 border rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-sm"
+                            />
+                        </div>
+                        <div>
+                            <label className="text-xs font-semibold text-gray-500 uppercase">Radar Date</label>
+                            <input
+                                type="datetime-local"
+                                name="radarDate"
+                                defaultValue={trade.radar_date ? new Date(trade.radar_date).toISOString().slice(0, 16) : ''}
+                                className="w-full mt-1 p-2 border rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 text-sm"
+                            />
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-3 gap-2">
                         <div>
-                            <label className="text-xs font-semibold text-gray-500 uppercase">Entry</label>
+                            <label className="text-xs font-semibold text-gray-500 uppercase">Entry Price</label>
                             <input
                                 type="number"
                                 step="0.01"
@@ -192,7 +218,10 @@ export function TradeCard({ trade }: TradeCardProps) {
     }
 
     return (
-        <div className="card p-4 hover:shadow-lg transition-shadow bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl relative group">
+        <div
+            id={`trade-card-${trade.id}`}
+            className="card p-4 hover:shadow-lg transition-shadow bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-xl relative group"
+        >
             {/* Header */}
             <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-2">
@@ -218,13 +247,15 @@ export function TradeCard({ trade }: TradeCardProps) {
                     >
                         {trade.outcome}
                     </span>
-                    { /* Share Button Logic kept same */}
+                    { /* Smart Share Button */}
                     {!isOpen && (
-                        <ShareWithSocials
-                            title="Share Trade"
-                            text={shareText}
-                            hashTags={['trading', 'finance', trade.instrument.toLowerCase().replace(/[^a-z0-9]/g, '')]}
-                        />
+                        <button
+                            onClick={handleShare}
+                            className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                            title="Share Trade Result"
+                        >
+                            <Share2 className="w-4 h-4" />
+                        </button>
                     )}
                 </div>
 
@@ -264,26 +295,34 @@ export function TradeCard({ trade }: TradeCardProps) {
             {/* Trade Details */}
             <div className="grid grid-cols-2 gap-3 text-sm mb-3">
                 <div>
-                    <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Entry</p>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Triggered</p>
                     <p className="font-semibold text-gray-900 dark:text-gray-100">
-                        ₹{trade.entry_price.toFixed(2)}
+                        {new Date(trade.entry_date).toLocaleDateString()}
                     </p>
                     <p className="text-xs text-gray-400">
-                        {new Date(trade.entry_date).toLocaleDateString()}
+                        @ ₹{trade.entry_price.toFixed(2)}
                     </p>
                 </div>
 
                 {trade.exit_price && (
                     <div>
-                        <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Exit</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Closed</p>
                         <p className="font-semibold text-gray-900 dark:text-gray-100">
-                            ₹{trade.exit_price.toFixed(2)}
+                            {trade.exit_date ? new Date(trade.exit_date).toLocaleDateString() : 'N/A'}
                         </p>
-                        {trade.exit_date && (
-                            <p className="text-xs text-gray-400">
-                                {new Date(trade.exit_date).toLocaleDateString()}
-                            </p>
-                        )}
+                        <p className="text-xs text-gray-400">
+                            @ ₹{trade.exit_price.toFixed(2)}
+                        </p>
+                    </div>
+                )}
+
+                {/* Radar Date Display if exists */}
+                {trade.radar_date && (
+                    <div>
+                        <p className="text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wider">Radar</p>
+                        <p className="font-medium text-gray-700 dark:text-gray-300">
+                            {new Date(trade.radar_date).toLocaleDateString()}
+                        </p>
                     </div>
                 )}
 
@@ -350,20 +389,34 @@ export function TradeCard({ trade }: TradeCardProps) {
             {showCloseForm && isOpen && (
                 <form action={handleClose} className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 space-y-3 bg-gray-50 dark:bg-gray-800/30 -mx-4 -mb-4 p-4 rounded-b-xl">
                     <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 mb-2">Close this trade</h4>
-                    <div>
-                        <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1 uppercase">
-                            Exit Price *
-                        </label>
-                        <input
-                            type="number"
-                            name="exitPrice"
-                            step="0.01"
-                            required
-                            placeholder="Enter execution price"
-                            className="w-full p-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
-                            aria-label="Exit Price"
-                        />
+                    <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1 uppercase">
+                                Closing Date
+                            </label>
+                            <input
+                                type="datetime-local"
+                                name="exitDate"
+                                defaultValue={new Date().toISOString().slice(0, 16)}
+                                className="w-full p-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1 uppercase">
+                                Exit Price *
+                            </label>
+                            <input
+                                type="number"
+                                name="exitPrice"
+                                step="0.01"
+                                required
+                                placeholder="Enter execution price"
+                                className="w-full p-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                                aria-label="Exit Price"
+                            />
+                        </div>
                     </div>
+
                     <div>
                         <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1 uppercase">
                             Outcome *
@@ -380,6 +433,19 @@ export function TradeCard({ trade }: TradeCardProps) {
                             <option value="MANUAL_EXIT">Manual Exit</option>
                         </select>
                     </div>
+
+                    <div>
+                        <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1 uppercase">
+                            Closing Note / Reason
+                        </label>
+                        <textarea
+                            name="mod_note"
+                            rows={2}
+                            placeholder="Why did you close here?"
+                            className="w-full p-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        />
+                    </div>
+
                     <div className="flex gap-2 pt-2">
                         <button
                             type="button"
@@ -399,6 +465,7 @@ export function TradeCard({ trade }: TradeCardProps) {
                 </form>
             )}
 
+
             {/* Actions Footer */}
             {!showCloseForm && isOpen && (
                 <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end">
@@ -410,6 +477,54 @@ export function TradeCard({ trade }: TradeCardProps) {
                     </button>
                 </div>
             )}
+
+            {/* Share Modal */}
+            <SocialShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                instrument={trade.instrument}
+                title={`Trade Result: ${trade.instrument}`}
+                shareText={`Just closed a trade on $${trade.instrument}! ${trade.pnl_points && trade.pnl_points > 0 ? '🚀' : '📉'} P&L: ${trade.pnl_points && trade.pnl_points > 0 ? '+' : ''}${trade.pnl_points} points. ${trade.outcome === 'WIN' ? 'Target Hit! 🎯' : 'Stop Hit.'}\n\nTrack your trades with Traders Diary: https://tradediary.equitymarvels.com`}
+            >
+                {/* Simplified Visual Card for Sharing */}
+                <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-2xl font-bold text-white tracking-tight">
+                            {trade.instrument}
+                        </h3>
+                        <span className={`px-3 py-1 text-sm font-bold rounded-lg ${isWin ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                            {trade.outcome}
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 my-2">
+                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                            <span className="text-xs text-slate-400 uppercase tracking-widest block mb-1">Direction</span>
+                            <span className={`text-sm font-bold flex items-center gap-2 ${isLong ? 'text-blue-400' : 'text-orange-400'}`}>
+                                {isLong ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                                {trade.direction}
+                            </span>
+                        </div>
+                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                            <span className="text-xs text-slate-400 uppercase tracking-widest block mb-1">P&L Points</span>
+                            <span className={`text-xl font-bold ${trade.pnl_points && trade.pnl_points > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                {trade.pnl_points && trade.pnl_points > 0 ? '+' : ''}{trade.pnl_points}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm text-slate-400 pt-2 border-t border-white/5">
+                        <div className="flex flex-col">
+                            <span className="text-[10px] uppercase tracking-wider">Triggered</span>
+                            <span className="font-mono text-white">{new Date(trade.entry_date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex flex-col text-right">
+                            <span className="text-[10px] uppercase tracking-wider">Closed</span>
+                            <span className="font-mono text-white">{trade.exit_date ? new Date(trade.exit_date).toLocaleDateString() : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            </SocialShareModal>
         </div>
     );
 }

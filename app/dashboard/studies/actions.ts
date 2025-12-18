@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 // import { Study } from '@/components/study-card';
@@ -60,6 +60,23 @@ export async function getActiveStudies() {
     }
 
     return { data: data || [] };
+}
+
+export async function getStudyById(id: string) {
+    const supabase = await createAdminClient();
+
+    // We fetch without user_id restriction for public sharing
+    const { data: study, error } = await supabase
+        .from('studies')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error || !study) {
+        return null;
+    }
+
+    return study;
 }
 
 // ... (imports remain)

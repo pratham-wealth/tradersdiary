@@ -1,138 +1,126 @@
 'use client';
 
 import Image from 'next/image';
-import { BarChart2, BookOpen, Fingerprint, Layers, LayoutDashboard, LineChart } from 'lucide-react';
+import { BarChart2, BookOpen, Fingerprint, Layers, LayoutDashboard, LineChart, MoveRight, Smartphone, Zap } from 'lucide-react';
+import Link from 'next/link';
 
 export function LandingFeatures() {
     return (
-        <section id="features" className="py-24 bg-slate-950 relative overflow-hidden">
+        <section id="features" className="py-32 bg-midnight-950 relative overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-20 space-y-4">
-                    <h2 className="text-3xl md:text-5xl font-bold text-white">
-                        The Ultimate <span className="text-gold-400">Trader&apos;s Command Center</span>
+                <div className="text-center mb-24 space-y-6">
+                    <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">Master Your Edge</span> <br />
+                        <span className="text-gold-400">With a Professional Process.</span>
                     </h2>
-                    <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-                        Everything you need to execute, analyze, and improve—all in one place.
+                    <p className="text-slate-400 text-xl max-w-2xl mx-auto font-light">
+                        Traders Diary isn't just a journal. It's a complete ecosystem designed to make you a consistent, profitable trader.
                     </p>
                 </div>
 
-                <div className="space-y-32">
-                    {/* Feature 1: Dashboard */}
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-6">
-                            <div className="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center text-gold-400 mb-4 border border-gold-400/20">
-                                <LayoutDashboard className="w-6 h-6" />
+                {/* Bento Grid Layout */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(300px,auto)]">
+
+                    {/* Item 1: Main Dashboard (Large Span) */}
+                    <div className="col-span-1 md:col-span-2 row-span-2 relative group overflow-hidden rounded-3xl border border-white/10 bg-midnight-900/50 hover:bg-midnight-900 transition-colors">
+                        <div className="absolute inset-0 bg-gradient-to-br from-gold-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="p-8 h-full flex flex-col relative z-10">
+                            <div className="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center mb-6 border border-gold-400/20">
+                                <LayoutDashboard className="w-6 h-6 text-gold-400" />
                             </div>
-                            <h3 className="text-3xl font-bold text-white">Total Market Awareness</h3>
-                            <p className="text-slate-400 text-lg leading-relaxed">
-                                Start your day with a clear view of the market. Our dashboard brings together your daily routine checklist, real-time market outlook market sentiment, and live ticker performance.
-                            </p>
-                            <ul className="space-y-3 pt-4">
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                                    Daily Routine Checklist
-                                </li>
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                                    Live Market Sentiment
-                                </li>
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-gold-400" />
-                                    Performance Analytics
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="relative group perspective-1000">
-                            <div className="absolute -inset-4 bg-gradient-to-r from-gold-400/20 to-purple-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-                            <div className="relative bg-slate-900 border border-white/10 rounded-2xl p-2 shadow-2xl transform transition-transform duration-500 hover:rotate-y-2">
+                            <h3 className="text-3xl font-bold text-white mb-2">Total Command Center</h3>
+                            <p className="text-slate-400 text-lg mb-8 max-w-md">The only screen you need. Keep your emotions in check, trade with a plan, and build your confidence. Execute your daily routine in one centralized view.</p>
+
+                            <div className="flex-1 w-full relative rounded-t-xl overflow-hidden border-t border-l border-r border-white/10 shadow-2xl translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
                                 <Image
                                     src="/landing/dashboard.png"
-                                    alt="Dashboard"
-                                    width={800}
-                                    height={500}
-                                    className="rounded-xl w-full h-auto"
+                                    alt="Dashboard Interface"
+                                    fill
+                                    className="object-cover object-left-top"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    {/* Feature 2: Journaling */}
-                    <div className="grid lg:grid-cols-2 gap-12 items-center lg:flex-row-reverse">
-                        <div className="order-last lg:order-first relative group perspective-1000">
-                            <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-                            <div className="relative bg-slate-900 border border-white/10 rounded-2xl p-2 shadow-2xl transform transition-transform duration-500 hover:-rotate-y-2">
+                    {/* Item 2: Journaling (Tall) */}
+                    <div className="col-span-1 row-span-2 relative group overflow-hidden rounded-3xl border border-white/10 bg-midnight-900/50 hover:bg-midnight-900 transition-colors">
+                        <div className="p-8 h-full flex flex-col relative z-10">
+                            <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20">
+                                <BookOpen className="w-5 h-5 text-blue-400" />
+                            </div>
+                            <h3 className="text-2xl font-bold text-white mb-2">Detailed Journaling</h3>
+                            <p className="text-slate-400 text-sm mb-6">Log trades, emotions, and setup quality. Tag errors and spot patterns.</p>
+
+                            <div className="flex-1 w-full relative rounded-xl overflow-hidden shadow-2xl border border-white/5">
                                 <Image
-                                    src="/landing/journal-modal.png"
-                                    alt="Journal Entry"
-                                    width={800}
-                                    height={500}
-                                    className="rounded-xl w-full h-auto"
+                                    src="/landing/journal.png"
+                                    alt="Journal Log"
+                                    fill
+                                    className="object-cover object-top hover:scale-105 transition-transform duration-700"
                                 />
                             </div>
                         </div>
-                        <div className="space-y-6">
-                            <div className="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400 mb-4 border border-blue-500/20">
-                                <BookOpen className="w-6 h-6" />
-                            </div>
-                            <h3 className="text-3xl font-bold text-white">Precision Journaling</h3>
-                            <p className="text-slate-400 text-lg leading-relaxed">
-                                Don&apos;t just track P&L. Track your psychology, execution quality, and mistakes. Our rich-text journal allows you to embed charts, tag setups, and review your thought process.
-                            </p>
-                            <ul className="space-y-3 pt-4">
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                                    Rich Text Editor & Chart Uploads
-                                </li>
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                                    Tag by Strategy & Outcome
-                                </li>
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-blue-400" />
-                                    Filter & Search History
-                                </li>
-                            </ul>
-                        </div>
                     </div>
 
-                    {/* Feature 3: Strategy Lab */}
-                    <div className="grid lg:grid-cols-2 gap-12 items-center">
-                        <div className="space-y-6">
-                            <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400 mb-4 border border-purple-500/20">
-                                <Fingerprint className="w-6 h-6" />
+                    {/* Item 3: Strategies (Wide) */}
+                    <div className="col-span-1 md:col-span-2 relative group overflow-hidden rounded-3xl border border-white/10 bg-midnight-900/50 hover:bg-midnight-900 transition-colors">
+                        <div className="absolute inset-0 bg-gradient-to-r from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div className="p-8 flex flex-col md:flex-row items-center gap-8 relative z-10">
+                            <div className="flex-1 space-y-4">
+                                <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                                    <Fingerprint className="w-5 h-5 text-purple-400" />
+                                </div>
+                                <h3 className="text-2xl font-bold text-white">Strategy Lab</h3>
+                                <p className="text-slate-400">Record your trading strategies with details, Entry/Exit criteria, Risk/Reward, and Rules. Add multiple strategies, revise regularly, and tag them with Chart Studies to track your Success Ratio.</p>
+                                <div className="flex gap-2">
+                                    <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-400 text-xs font-mono border border-green-500/20">Win %</span>
+                                    <span className="px-3 py-1 rounded-full bg-red-500/10 text-red-400 text-xs font-mono border border-red-500/20">Drawdown</span>
+                                </div>
                             </div>
-                            <h3 className="text-3xl font-bold text-white">Strategy Lab</h3>
-                            <p className="text-slate-400 text-lg leading-relaxed">
-                                Define your edge. detailed strategy cards let you codify your rules, track win-rates, and identify which setups are printing money and which are burning capital.
-                            </p>
-                            <ul className="space-y-3 pt-4">
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                                    Win Rate Tracking
-                                </li>
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                                    Risk/Reward Ratios
-                                </li>
-                                <li className="flex items-center gap-3 text-slate-300">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-purple-400" />
-                                    Rule Definition Checklist
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="relative group perspective-1000">
-                            <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity" />
-                            <div className="relative bg-slate-900 border border-white/10 rounded-2xl p-2 shadow-2xl transform transition-transform duration-500 hover:rotate-y-2">
+                            <div className="w-full md:w-1/2 md:h-48 relative rounded-xl overflow-hidden border border-white/10 shadow-lg">
                                 <Image
                                     src="/landing/strategies.png"
-                                    alt="Strategies"
-                                    width={800}
-                                    height={500}
-                                    className="rounded-xl w-full h-auto"
+                                    alt="Strategy Builder"
+                                    fill
+                                    className="object-cover object-center"
                                 />
                             </div>
                         </div>
                     </div>
+
+                    {/* Item 4: Library */}
+                    <div className="col-span-1 relative group overflow-hidden rounded-3xl border border-white/10 bg-midnight-900/50 hover:bg-midnight-900 transition-colors">
+                        <div className="p-8 h-full flex flex-col">
+                            <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-6 border border-orange-500/20">
+                                <Layers className="w-5 h-5 text-orange-400" />
+                            </div>
+                            <h3 className="text-xl font-bold text-white mb-2">Knowledge Vault</h3>
+                            <div className="text-slate-400 text-sm space-y-3 mb-4 flex-1">
+                                <p>Library of Chart Patterns & Candlestick Patterns.</p>
+                                <p>Upload Reference Books, and Create your Own Book Library. Every Book at your fingertips, Properly Organised and easy to use.</p>
+                                <p>Create Screeners For Fundamental Analysis. Keep a Record of Your Screener Ideas.</p>
+                                <p className="text-gold-400/80 italic text-xs">Much More to Come in this Section...</p>
+                            </div>
+                            <Link href="/auth/register" className="inline-flex items-center text-gold-400 text-sm font-bold group-hover:gap-2 transition-all">
+                                Explore Library <MoveRight className="w-4 h-4 ml-1" />
+                            </Link>
+                        </div>
+                    </div>
+
+                    {/* Item 5: Mobile */}
+                    <div className="col-span-1 md:col-span-3 relative group overflow-hidden rounded-3xl border border-gold-400/20 bg-gradient-to-r from-midnight-900 to-midnight-950 p-12 text-center">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold-400 to-transparent opacity-50"></div>
+                        <Zap className="w-12 h-12 text-gold-400 mx-auto mb-6 animate-pulse" />
+                        <h3 className="text-3xl font-bold text-white mb-4">Ready to Level Up?</h3>
+                        <p className="text-slate-400 mb-8 max-w-xl mx-auto">Join the top 10% of traders who treat this as a business. Your journey to consistency starts here.</p>
+                        <Link
+                            href="/auth/register"
+                            className="inline-flex items-center px-8 py-4 bg-gold-400 text-black font-bold rounded-full hover:bg-gold-500 transition-all shadow-lg hover:shadow-gold-400/20 hover:scale-105"
+                        >
+                            Get Started Now
+                        </Link>
+                    </div>
+
                 </div>
             </div>
         </section>

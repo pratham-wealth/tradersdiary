@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Menu, X, User, CreditCard, Calendar, Mail, Settings, LogOut, ClipboardList, Lock } from 'lucide-react';
+import { Menu, X, User, CreditCard, Calendar, Mail, Settings, LogOut, ClipboardList, Lock, BarChart2, BookOpen, Layers, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { signOut } from '@/app/auth/actions';
 import { AdBanner } from '@/components/ad-banner';
@@ -39,6 +39,8 @@ const menuItems = [
         href: '/dashboard/settings',
         icon: Settings,
     },
+    // New items for launch - Removed as per request (already in More Menu)
+
 ];
 
 export function HamburgerMenu() {

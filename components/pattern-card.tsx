@@ -15,7 +15,7 @@ export function PatternCard({ pattern }: PatternCardProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     // Share Text
-    const shareText = `Mastering the ${pattern.name} pattern on TradeNote!\n\nSuccess Rate: ${pattern.success_ratio}%\n\nLearn more and track your trading journey:`;
+    const shareText = `Mastering the ${pattern.name} pattern on TradeNote!\n\nSuccess Rate: ${pattern.success_ratio}\n\nLearn more and track your trading journey:`;
 
     return (
         <>
@@ -43,7 +43,7 @@ export function PatternCard({ pattern }: PatternCardProps) {
                     )}
                     {/* Badge */}
                     <div className="absolute top-2 right-2 bg-emerald-500/90 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm backdrop-blur-sm">
-                        {pattern.success_ratio}% WR
+                        {pattern.success_ratio} WR
                     </div>
                 </div>
 
@@ -90,6 +90,12 @@ export function PatternCard({ pattern }: PatternCardProps) {
                                             understanding={pattern.understanding}
                                             rules={pattern.trading_rules}
                                             successRatio={pattern.success_ratio}
+                                            imageUrl={pattern.image_url}
+                                            marketContext={pattern.market_context}
+                                            invalidationConditions={pattern.invalidation_conditions}
+                                            timeframeSuitability={pattern.timeframe_suitability}
+                                            volumeConfirmation={pattern.volume_confirmation}
+                                            difficultyLevel={pattern.difficulty_level}
                                         />
                                     }
                                     fileName={`${pattern.name.replace(/\s+/g, '_')}_Guide.pdf`}
@@ -103,6 +109,7 @@ export function PatternCard({ pattern }: PatternCardProps) {
                                 <ShareWithSocials
                                     title={`Master ${pattern.name}`}
                                     text={shareText}
+                                    url={`${typeof window !== 'undefined' ? window.location.origin : 'https://tradenote.app'}/share/pattern/${pattern.id}`}
                                     hashTags={['trading', 'patterns', 'education']}
                                 />
 
@@ -141,8 +148,8 @@ export function PatternCard({ pattern }: PatternCardProps) {
                                             <span className="text-sm font-bold text-slate-300 uppercase tracking-wide">Performance Metric</span>
                                         </div>
                                         <div className="flex items-end gap-2">
-                                            <span className="text-3xl font-bold text-white">{pattern.success_ratio}%</span>
-                                            <span className="text-sm text-slate-400 mb-1">Historical Success Rate</span>
+                                            <span className="text-2xl font-bold text-white">{pattern.success_ratio}</span>
+                                            <span className="text-sm text-slate-400 mb-1">Success Rate</span>
                                         </div>
                                     </div>
 
@@ -172,9 +179,51 @@ export function PatternCard({ pattern }: PatternCardProps) {
                                         <span className="w-8 h-[2px] bg-gold-400"></span>
                                         Understanding The Logic
                                     </h3>
-                                    <p className="text-slate-300 leading-relaxed text-lg font-light">
+                                    <p className="text-slate-300 leading-relaxed text-lg font-light whitespace-pre-line">
                                         {pattern.understanding}
                                     </p>
+                                </div>
+
+                                {/* Extra Details Grid */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-in slide-in-from-bottom-4 duration-500 delay-150">
+                                    {(pattern.market_context || pattern.invalidation_conditions) && (
+                                        <>
+                                            {pattern.market_context && (
+                                                <div className="bg-slate-800/20 p-5 rounded-xl border border-white/5">
+                                                    <h4 className="text-xs font-bold text-blue-400 uppercase tracking-wider mb-2">Ideal Context</h4>
+                                                    <p className="text-sm text-slate-300 whitespace-pre-line">{pattern.market_context}</p>
+                                                </div>
+                                            )}
+                                            {pattern.invalidation_conditions && (
+                                                <div className="bg-slate-800/20 p-5 rounded-xl border border-white/5">
+                                                    <h4 className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2">Invalidation</h4>
+                                                    <p className="text-sm text-slate-300 whitespace-pre-line">{pattern.invalidation_conditions}</p>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+                                    {(pattern.timeframe_suitability || pattern.volume_confirmation || pattern.difficulty_level) && (
+                                        <div className="col-span-full bg-slate-800/20 p-5 rounded-xl border border-white/5 flex flex-wrap gap-8">
+                                            {pattern.timeframe_suitability && (
+                                                <div>
+                                                    <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Timeframes</h4>
+                                                    <p className="text-sm text-white font-medium">{pattern.timeframe_suitability}</p>
+                                                </div>
+                                            )}
+                                            {pattern.volume_confirmation && (
+                                                <div>
+                                                    <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Volume</h4>
+                                                    <p className="text-sm text-white font-medium">{pattern.volume_confirmation}</p>
+                                                </div>
+                                            )}
+                                            {pattern.difficulty_level && (
+                                                <div>
+                                                    <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Difficulty</h4>
+                                                    <p className="text-sm text-white font-medium">{pattern.difficulty_level}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
 
                                 {/* Rules */}

@@ -351,10 +351,16 @@ export type CreatePatternParams = {
     description: string;
     understanding: string;
     tradingRules: string;
-    successRatio: number;
+    successRatio: string; // Changed to string
     imageUrl: string | null;
     videoUrl: string | null;
     isPremium: boolean;
+    // New Fields
+    marketContext: string;
+    invalidationConditions: string;
+    timeframeSuitability: string;
+    volumeConfirmation: string;
+    difficultyLevel: string;
 };
 
 export async function createPattern(params: CreatePatternParams) {
@@ -381,7 +387,12 @@ export async function createPattern(params: CreatePatternParams) {
                 success_ratio: params.successRatio,
                 image_url: params.imageUrl,
                 video_url: params.videoUrl,
-                is_premium: params.isPremium
+                is_premium: params.isPremium,
+                market_context: params.marketContext,
+                invalidation_conditions: params.invalidationConditions,
+                timeframe_suitability: params.timeframeSuitability,
+                volume_confirmation: params.volumeConfirmation,
+                difficulty_level: params.difficultyLevel
             });
 
         if (error) throw error;
@@ -510,6 +521,11 @@ export async function updatePattern(id: string, params: Partial<CreatePatternPar
         if (params.imageUrl) updates.image_url = params.imageUrl;
         if (params.videoUrl !== undefined) updates.video_url = params.videoUrl;
         if (params.isPremium !== undefined) updates.is_premium = params.isPremium;
+        if (params.marketContext) updates.market_context = params.marketContext;
+        if (params.invalidationConditions) updates.invalidation_conditions = params.invalidationConditions;
+        if (params.timeframeSuitability) updates.timeframe_suitability = params.timeframeSuitability;
+        if (params.volumeConfirmation) updates.volume_confirmation = params.volumeConfirmation;
+        if (params.difficultyLevel) updates.difficulty_level = params.difficultyLevel;
 
         const { error } = await supabase
             .from('learning_patterns')

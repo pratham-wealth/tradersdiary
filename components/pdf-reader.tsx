@@ -60,12 +60,24 @@ export function PDFReader({ url, title, userEmail, onClose }: PDFReaderProps) {
                     }}
                 >
                     <div className="w-full h-full relative">
-                        <iframe
+                        <object
                             key={zoom}
-                            src={`${url}#toolbar=0&navpanes=0&zoom=${zoom}`}
+                            data={`${url}#toolbar=0&navpanes=0&zoom=${zoom}`}
+                            type="application/pdf"
                             className="w-full h-full block"
-                            title={title}
-                        />
+                        >
+                            <div className="flex flex-col items-center justify-center h-full text-slate-400 p-8 text-center bg-slate-100">
+                                <p className="mb-4">Unable to display PDF directly in this browser.</p>
+                                <a
+                                    href={url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                                >
+                                    Download PDF
+                                </a>
+                            </div>
+                        </object>
 
                         {/* Secure Stamp Overlay */}
                         <div className="absolute inset-0 pointer-events-none flex flex-col justify-end items-center pb-4 z-10 overflow-hidden mix-blend-multiply">

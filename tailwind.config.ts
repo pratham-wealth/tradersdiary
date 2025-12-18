@@ -17,9 +17,11 @@ const config: Config = {
           700: '#334155', // Borders / Separators
         },
         gold: {
+          300: '#fcd34d', // Added for gradients
           400: '#fbbf24', // Primary accent / active text
           500: '#f59e0b', // Buttons / Interactables
           600: '#d97706', // Hover states
+          700: '#b45309', // Darker shade
           glow: 'rgba(251, 191, 36, 0.2)', // Glow effects
         },
         // Trading specific colors (Keeping existing but tweaking for dark mode)

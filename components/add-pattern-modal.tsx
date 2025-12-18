@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { DynamicListInput } from '@/components/ui/dynamic-list-input';
 
 export interface PatternInitialValues {
     id?: string;
@@ -17,10 +18,16 @@ export interface PatternInitialValues {
     description: string;
     understanding: string;
     tradingRules: string;
-    successRatio: number;
+    successRatio: string; // Changed to string
     videoUrl?: string | null;
     imageUrl?: string | null;
     isPremium: boolean;
+    // New Fields
+    marketContext?: string;
+    invalidationConditions?: string;
+    timeframeSuitability?: string;
+    volumeConfirmation?: string;
+    difficultyLevel?: string;
 }
 
 interface AddPatternModalProps {
@@ -76,10 +83,15 @@ export function AddPatternModal({ onClose, initialValues }: AddPatternModalProps
                 description: formData.get('description') as string,
                 understanding: formData.get('understanding') as string,
                 tradingRules: formData.get('tradingRules') as string,
-                successRatio: parseFloat(formData.get('successRatio') as string),
+                successRatio: formData.get('successRatio') as string,
                 imageUrl,
                 videoUrl: formData.get('videoUrl') as string || null,
-                isPremium: formData.get('isPremium') === 'on'
+                isPremium: formData.get('isPremium') === 'on',
+                marketContext: formData.get('marketContext') as string,
+                invalidationConditions: formData.get('invalidationConditions') as string,
+                timeframeSuitability: formData.get('timeframeSuitability') as string,
+                volumeConfirmation: formData.get('volumeConfirmation') as string,
+                difficultyLevel: formData.get('difficultyLevel') as string
             };
 
             if (isEditing && initialValues?.id) {
@@ -139,8 +151,8 @@ export function AddPatternModal({ onClose, initialValues }: AddPatternModalProps
                             {/* Metrics & Media */}
                             <div className="space-y-4">
                                 <div>
-                                    <label className="block text-xs font-medium text-slate-400 mb-1">Success Ratio (%)</label>
-                                    <input defaultValue={initialValues?.successRatio} name="successRatio" type="number" step="0.1" required placeholder="e.g. 75.5" className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none" />
+                                    <label className="block text-xs font-medium text-slate-400 mb-1">Success Ratio (Text allowed, e.g. 75-80%)</label>
+                                    <input defaultValue={initialValues?.successRatio} name="successRatio" required placeholder="e.g. 75.5 or High" className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none" />
                                 </div>
                                 <div>
                                     <label className="block text-xs font-medium text-slate-400 mb-1">Video URL (Optional)</label>
@@ -164,8 +176,39 @@ export function AddPatternModal({ onClose, initialValues }: AddPatternModalProps
                                 <textarea defaultValue={initialValues?.understanding} name="understanding" required rows={4} placeholder="Explain the psychology behind the pattern..." className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none" />
                             </div>
                             <div>
-                                <label className="block text-xs font-medium text-slate-400 mb-1">Trading Rules (One per line)</label>
-                                <textarea defaultValue={initialValues?.tradingRules} name="tradingRules" required rows={5} placeholder="1. Identify trend...&#10;2. Wait for breakout...&#10;3. Set stop loss..." className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none font-mono text-sm" />
+                                <label className="block text-xs font-medium text-slate-400 mb-1">Trading Rules (Add rules one by one)</label>
+                                <DynamicListInput
+                                    name="tradingRules"
+                                    defaultValue={initialValues?.tradingRules}
+                                    placeholder="e.g. Identify trend..."
+                                />
+                            </div>
+
+                            {/* Detailed Analysis Fields */}
+                            <div className="pt-4 border-t border-white/5 space-y-4">
+                                <h4 className="text-sm font-bold text-white uppercase tracking-wider">Detailed Analysis</h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-medium text-slate-400 mb-1">Market Context (Optional)</label>
+                                        <textarea defaultValue={initialValues?.marketContext} name="marketContext" rows={3} placeholder="Best Market Conditions..." className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none resize-none" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-slate-400 mb-1">Invalidation Conditions (Optional)</label>
+                                        <textarea defaultValue={initialValues?.invalidationConditions} name="invalidationConditions" rows={3} placeholder="When this pattern fails..." className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none resize-none" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-slate-400 mb-1">Timeframe Suitability (Optional)</label>
+                                        <input defaultValue={initialValues?.timeframeSuitability} name="timeframeSuitability" placeholder="e.g. H1, H4, Daily" className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-slate-400 mb-1">Volume Confirmation (Optional)</label>
+                                        <input defaultValue={initialValues?.volumeConfirmation} name="volumeConfirmation" placeholder="e.g. Spike on breakout" className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none" />
+                                    </div>
+                                    <div className="col-span-1 md:col-span-2">
+                                        <label className="block text-xs font-medium text-slate-400 mb-1">Difficulty Level (Optional)</label>
+                                        <input defaultValue={initialValues?.difficultyLevel} name="difficultyLevel" placeholder="e.g. Beginner" className="w-full bg-slate-950 border border-white/10 rounded-lg p-3 text-white focus:border-red-500 focus:outline-none" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

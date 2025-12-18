@@ -290,6 +290,17 @@ export function BookCard({ book, userEmail, currency = 'INR' }: BookCardProps) {
                     )}
                 </div>
             </div>
+            {isReading && readUrl && (
+                <PDFReader
+                    url={readUrl}
+                    title={book.title}
+                    userEmail={userEmail}
+                    onClose={() => {
+                        setIsReading(false);
+                        setReadUrl(null);
+                    }}
+                />
+            )}
         </>
     );
 }

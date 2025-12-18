@@ -97,6 +97,21 @@ const styles = StyleSheet.create({
         textTransform: 'uppercase',
     },
 
+    // Timeline Row
+    timelineRow: {
+        flexDirection: 'row',
+        marginBottom: 8,
+        paddingBottom: 8,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#F3F4F6',
+    },
+    timelineText: {
+        fontSize: 7,
+        color: '#6B7280',
+        textTransform: 'uppercase',
+        letterSpacing: 0.5,
+    },
+
     // Data Grid (Dense)
     gridContainer: {
         flexDirection: 'row',
@@ -254,6 +269,31 @@ export const TradeReportPDF = ({ title, dateRange, trades, summary }: TradePDFPr
                                 <Text style={styles.tradeMeta}>{new Date(trade.entry_date).toLocaleDateString()}</Text>
                             </View>
 
+                            {/* Timeline Row */}
+                            <View style={styles.timelineRow}>
+                                {trade.study?.created_at && (
+                                    <Text style={styles.timelineText}>
+                                        Study Created: {new Date(trade.study.created_at).toLocaleDateString()}
+                                        {'   |   '}
+                                    </Text>
+                                )}
+                                {trade.radar_date && (
+                                    <Text style={styles.timelineText}>
+                                        Added to Watchlist: {new Date(trade.radar_date).toLocaleDateString()}
+                                        {'   |   '}
+                                    </Text>
+                                )}
+                                <Text style={styles.timelineText}>
+                                    Trade Triggered: {new Date(trade.entry_date).toLocaleDateString()}
+                                </Text>
+                                {trade.exit_date && (
+                                    <Text style={styles.timelineText}>
+                                        {'   |   '}
+                                        Trade Exited: {new Date(trade.exit_date).toLocaleDateString()}
+                                    </Text>
+                                )}
+                            </View>
+
                             {/* Data Grid (4 Columns) */}
                             <View style={styles.gridContainer}>
                                 <View style={styles.gridItem}>
@@ -288,39 +328,43 @@ export const TradeReportPDF = ({ title, dateRange, trades, summary }: TradePDFPr
                             </View>
 
                             {/* Detailed Analysis (Full Width) */}
-                            {(trade.notes) && (
-                                <View style={{ marginTop: 2 }}>
-                                    <Text style={styles.sectionHeader}>ANALYSIS & EXECUTION NOTES</Text>
-                                    <Text style={styles.textContent}>
-                                        {trade.notes}
-                                    </Text>
-                                </View>
-                            )}
+                            {
+                                (trade.notes) && (
+                                    <View style={{ marginTop: 2 }}>
+                                        <Text style={styles.sectionHeader}>ANALYSIS & EXECUTION NOTES</Text>
+                                        <Text style={styles.textContent}>
+                                            {trade.notes}
+                                        </Text>
+                                    </View>
+                                )
+                            }
 
                             {/* Linked Study (Full Width) */}
-                            {trade.study && (
-                                <View style={{ marginTop: 6 }}>
-                                    <Text style={[styles.sectionHeader, { borderLeftColor: '#7C3AED', color: '#7C3AED' }]}>
-                                        LINKED STUDY: {trade.study.title?.toUpperCase()}
-                                    </Text>
-                                    <Text style={styles.textContent}>
-                                        {trade.study.content}
-                                    </Text>
-                                </View>
-                            )}
+                            {
+                                trade.study && (
+                                    <View style={{ marginTop: 6 }}>
+                                        <Text style={[styles.sectionHeader, { borderLeftColor: '#7C3AED', color: '#7C3AED' }]}>
+                                            LINKED STUDY: {trade.study.title?.toUpperCase()}
+                                        </Text>
+                                        <Text style={styles.textContent}>
+                                            {trade.study.content}
+                                        </Text>
+                                    </View>
+                                )
+                            }
                         </View>
                     );
                 })}
 
                 {/* Footer */}
                 <View style={styles.footer} fixed>
-                    <Text style={styles.footerText}>Traders Journal • Professional Trade Reporting</Text>
+                    <Text style={styles.footerText}>Traders Diary by Pratham Wealth Academy • https://tradediary.equitymarvels.com</Text>
                     <Text style={styles.footerText} render={({ pageNumber, totalPages }) => (
                         `Page ${pageNumber} of ${totalPages}`
                     )} />
                 </View>
 
             </Page>
-        </Document>
+        </Document >
     );
 };

@@ -1,9 +1,10 @@
 'use client';
 
 import { WatchItem } from './watch-card';
-import { Trash2, TrendingUp, TrendingDown, BookOpen, FilePlus, ChevronDown, ChevronUp } from 'lucide-react';
+import { Trash2, TrendingUp, TrendingDown, BookOpen, FilePlus, ChevronDown, ChevronUp, Share2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { SocialShareModal } from './social-share-modal';
 
 interface WatchListProps {
     items: WatchItem[];
@@ -13,6 +14,18 @@ interface WatchListProps {
 
 export function WatchList({ items, onDelete, onEdit }: WatchListProps) {
     const [expandedId, setExpandedId] = useState<string | null>(null);
+    const [shareItem, setShareItem] = useState<WatchItem | null>(null);
+
+    // Helper to get share URL
+    const getShareUrl = (item: WatchItem) => {
+        const origin = typeof window !== 'undefined' ? window.location.origin : 'https://tradenote.app';
+        // @ts-ignore
+        if (item.study?.id) {
+            // @ts-ignore
+            return `${origin}/share/study/${item.study.id}`;
+        }
+        return origin; // Fallback
+    };
 
     if (!items || items.length === 0) {
         return null;
@@ -147,6 +160,14 @@ export function WatchList({ items, onDelete, onEdit }: WatchListProps) {
                                         </div>
                                     )}
 
+                                    <button
+                                        onClick={() => setShareItem(item)}
+                                        className="bg-slate-800 hover:bg-blue-600 border border-white/5 text-white px-3 py-2 rounded-lg shadow-sm hover:shadow-md hover:shadow-blue-500/20 active:scale-95 transition-all duration-200"
+                                        title="Share Setup"
+                                    >
+                                        <Share2 className="w-3.5 h-3.5" />
+                                    </button>
+
                                     <Link
                                         href={`/dashboard/journal?watchItemId=${item.id}`}
                                         className="flex-[1.5] bg-emerald-600 hover:bg-emerald-500 border border-emerald-500/50 text-white text-[10px] font-bold px-3 py-2 rounded-lg shadow-md hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 transition-all duration-200 flex items-center justify-center gap-2"
@@ -168,6 +189,19 @@ export function WatchList({ items, onDelete, onEdit }: WatchListProps) {
                     </div>
                 );
             })}
+            {/* Share Modal */}
+            {shareItem && (
+                <SocialShareModal
+                    isOpen={!!shareItem}
+                    onClose={() => setShareItem(null)}
+                    title={`Trade Idea: ${shareItem.instrument}`}
+                    instrument={shareItem.instrument}
+                    variant="watchlist"
+                    data={shareItem}
+                    shareUrl={getShareUrl(shareItem)}
+                    shareText={`👀 Watching $${shareItem.instrument} for a potential ${shareItem.direction} setup!\n\n${shareItem.notes ? `"${shareItem.notes}"\n\n` : ''}Track this setup on Traders Diary`}
+                />
+            )}
         </div>
     );
 }

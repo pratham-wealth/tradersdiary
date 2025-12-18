@@ -79,6 +79,7 @@ export interface UserBook {
     created_at: string;
     user_id: string; // Needed for ownership check
     is_public: boolean;
+    is_global?: boolean;
     access_level?: 'free' | 'premium' | 'paid';
     price?: number;
     price_usd?: number;

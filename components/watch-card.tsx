@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { closeWatchItem, deleteWatchItem } from '../app/dashboard/watch/actions';
-import { Edit, X, TrendingUp, TrendingDown } from 'lucide-react';
+import { Edit, X, TrendingUp, TrendingDown, Share2 } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import { SocialShareModal } from './social-share-modal';
 
 export interface WatchItem {
     id: string;
@@ -27,6 +29,7 @@ interface WatchCardProps {
 
 export function WatchCard({ item }: WatchCardProps) {
     const [loading, setLoading] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
 
     async function handleClose() {
         if (!confirm('Close this watch item?')) return;
@@ -40,26 +43,47 @@ export function WatchCard({ item }: WatchCardProps) {
         await deleteWatchItem(item.id);
     }
 
+    function handleShare(e: React.MouseEvent) {
+        e.stopPropagation();
+        setShowShareModal(true);
+    }
+
+
     const isLong = item.direction === 'LONG';
 
     return (
-        <div className="card p-4 hover:shadow-lg transition-shadow">
+        <div
+            id={`watch-card-${item.id}`}
+            className="card p-4 hover:shadow-lg transition-shadow bg-white dark:bg-gray-900"
+        >
             <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                        {item.instrument}
-                    </h3>
-                    <span
-                        className={`px-2 py-1 text-xs font-semibold rounded ${isLong
-                            ? 'bg-long/10 text-long'
-                            : 'bg-short/10 text-short'
-                            }`}
-                    >
-                        {isLong ? <TrendingUp className="w-3 h-3 inline" /> : <TrendingDown className="w-3 h-3 inline" />}
-                        {' '}{item.direction}
+                <div className="flex flex-col">
+                    <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                            {item.instrument}
+                        </h3>
+                        <span
+                            className={`px-2 py-1 text-xs font-semibold rounded ${isLong
+                                ? 'bg-long/10 text-long'
+                                : 'bg-short/10 text-short'
+                                }`}
+                        >
+                            {isLong ? <TrendingUp className="w-3 h-3 inline" /> : <TrendingDown className="w-3 h-3 inline" />}
+                            {' '}{item.direction}
+                        </span>
+                    </div>
+                    <span className="text-[10px] text-gray-400 mt-0.5">
+                        Added: {new Date(item.created_at).toLocaleDateString()}
                     </span>
                 </div>
                 <div className="flex gap-2">
+                    <button
+                        onClick={handleShare}
+                        className="text-gray-400 hover:text-blue-500 transition-colors"
+                        title="Share Setup"
+                    >
+                        <Share2 className="w-4 h-4" />
+                    </button>
                     <button
                         onClick={handleClose}
                         disabled={loading}

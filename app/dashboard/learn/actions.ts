@@ -10,10 +10,16 @@ export interface LearningPattern {
     description: string;
     understanding: string;
     trading_rules: string;
-    success_ratio: number;
+    success_ratio: string; // Changed to string
     image_url: string | null;
     video_url: string | null;
     is_premium: boolean;
+    // New Fields
+    market_context?: string;
+    invalidation_conditions?: string;
+    timeframe_suitability?: string;
+    volume_confirmation?: string;
+    difficulty_level?: string;
 }
 
 export async function getPatternsByType(type: 'CHART' | 'CANDLESTICK'): Promise<Record<string, LearningPattern[]>> {
@@ -46,4 +52,21 @@ export async function getPatternsByType(type: 'CHART' | 'CANDLESTICK'): Promise<
     });
 
     return grouped;
+}
+
+export async function getPatternById(id: string): Promise<LearningPattern | null> {
+    const supabase = await createClient();
+
+    const { data: pattern, error } = await supabase
+        .from('learning_patterns')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error || !pattern) {
+        console.error('Error fetching pattern by ID:', error);
+        return null;
+    }
+
+    return pattern as LearningPattern;
 }

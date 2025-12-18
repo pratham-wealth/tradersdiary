@@ -1,47 +1,64 @@
 'use client';
 
 import { Star, Quote } from 'lucide-react';
+import Image from 'next/image';
 
 export function LandingTestimonials() {
     return (
-        <section className="py-24 bg-midnight-950/50 border-t border-white/5">
+        <section className="py-24 bg-midnight-950 relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
-                    <h2 className="text-3xl font-bold text-white mb-4">Trusted by Serious Traders</h2>
-                    <p className="text-slate-400">Join a community of traders who treat their craft like a business.</p>
+                    <h2 className="text-3xl md:text-5xl font-black text-white mb-6">Trusted by Serious Traders</h2>
+                    <p className="text-slate-400 text-lg max-w-2xl mx-auto">Join a community of disciplined traders who treat their craft like a business.</p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid md:grid-cols-3 gap-6">
                     {[
                         {
                             name: "Alex M.",
-                            role: "Forex Trader",
-                            text: "Before Traders Diary, I was just guessing. Now I have a playbook. The ability to tag strategies has completely changed my P&L."
+                            role: "Forex Scalper",
+                            text: "Before Traders Diary, I was just guessing. The strategy tagging feature specifically helped me realize my 'Asian Session Breakout' had a 30% win rate. Dropped it and my PL doubled.",
+                            initials: "AM",
+                            color: "bg-blue-500"
                         },
                         {
-                            name: "Sarah K.",
-                            role: "Options Specialist",
-                            text: "The morning routine checklist keeps me disciplined. I don't take a trade until I've checked every box. This app acts like my risk manager."
+                            name: "Vikram M.",
+                            role: "Equity Trader",
+                            text: "The morning routine checklist is non-negotiable for me now. I don't take a single trade until I've checked every box. This app acts like my personal risk manager.",
+                            initials: "VM",
+                            color: "bg-orange-500"
                         },
                         {
                             name: "David R.",
                             role: "Swing Trader",
-                            text: "Cleanest journal I've used. Dark mode is perfect for late-night analysis, and the analytics are actually useful, not just noise."
+                            text: "Cleanest journal I've used. Most apps are too cluttered. This gives me exactly what I need: Charts, Rules, and Data. The dark mode is also easy on the eyes.",
+                            initials: "DR",
+                            color: "bg-emerald-500"
                         }
                     ].map((testimonial, i) => (
-                        <div key={i} className="bg-slate-900 border border-white/10 p-8 rounded-2xl relative">
-                            <Quote className="absolute top-6 right-6 w-8 h-8 text-gold-400/20" />
-                            <div className="flex gap-1 mb-4">
+                        <div key={i} className="group relative bg-midnight-900/50 border border-white/5 p-8 rounded-3xl hover:bg-midnight-900 hover:border-gold-400/20 transition-all duration-300 hover:-translate-y-1">
+                            <div className="absolute top-8 right-8 text-white/5 group-hover:text-gold-400/10 transition-colors">
+                                <Quote className="w-12 h-12 fill-current" />
+                            </div>
+
+                            <div className="flex gap-1 mb-6">
                                 {[...Array(5)].map((_, j) => (
-                                    <Star key={j} className="w-5 h-5 fill-gold-400 text-gold-400" />
+                                    <Star key={j} className="w-4 h-4 fill-gold-400 text-gold-400" />
                                 ))}
                             </div>
-                            <p className="text-slate-300 mb-6 leading-relaxed">
+
+                            <p className="text-slate-300 mb-8 leading-relaxed relative z-10">
                                 &quot;{testimonial.text}&quot;
                             </p>
-                            <div>
-                                <h4 className="font-bold text-white">{testimonial.name}</h4>
-                                <p className="text-sm text-gold-400">{testimonial.role}</p>
+
+                            <div className="flex items-center gap-4">
+                                <div className={`w-10 h-10 rounded-full ${testimonial.color} flex items-center justify-center text-white font-bold text-sm shadow-lg ring-2 ring-white/10`}>
+                                    {testimonial.initials}
+                                </div>
+                                <div>
+                                    <h4 className="font-bold text-white group-hover:text-gold-400 transition-colors">{testimonial.name}</h4>
+                                    <p className="text-xs font-mono text-slate-500 uppercase tracking-wider">{testimonial.role}</p>
+                                </div>
                             </div>
                         </div>
                     ))}

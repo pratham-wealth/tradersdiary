@@ -157,7 +157,7 @@ export async function getTradesForPeriod(
 
     const { data: trades } = await supabase
         .from('trades')
-        .select('*, strategy:strategies(name), study:studies(title, content)')
+        .select('*, strategy:strategies(name), study:studies(title, content, created_at)')
         .eq('user_id', user.id)
         .gte('entry_date', startDate.toISOString())
         .lte('entry_date', endDate.toISOString())

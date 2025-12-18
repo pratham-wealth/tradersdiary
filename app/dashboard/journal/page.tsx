@@ -40,6 +40,7 @@ export default async function JournalPage({ searchParams }: { searchParams: Prom
                     target_price: watchItem.target_price,
                     strategy_id: watchItem.strategy_id,
                     study_id: watchItem.study_id,
+                    created_at: watchItem.created_at, // Pass creation date
                 };
             }
         } catch (error) {

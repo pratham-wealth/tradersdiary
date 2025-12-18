@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { deleteStudy, updateStudyStatus, addToWatchlist } from '@/app/dashboard/studies/actions';
-import { CheckCircle, XCircle, Archive, Edit2, Trash2, Eye } from 'lucide-react';
+import { CheckCircle, XCircle, Archive, Edit2, Trash2, Eye, Share2 } from 'lucide-react';
+import html2canvas from 'html2canvas';
+import { SocialShareModal } from './social-share-modal';
 
 export interface Study {
     id: string;
@@ -78,6 +80,7 @@ const probabilityStyles: Record<string, { border: string; bg: string; badge: str
 export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
     const [expanded, setExpanded] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [showShareModal, setShowShareModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
     async function handleDelete(e: React.MouseEvent) {
@@ -112,16 +115,20 @@ export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
         }
     }
 
+    function handleShare(e: React.MouseEvent) {
+        e.stopPropagation();
+        setShowShareModal(true);
+    }
+
     const typeInfo = studyTypeLabels[study.study_type] || studyTypeLabels.OTHER;
     const isCompleted = study.status === 'COMPLETED';
 
     // Get styles based on probability (default to LOW/slate if undefined)
     const styles = study.probability ? probabilityStyles[study.probability] : probabilityStyles.LOW;
 
-
-
     return (
         <div
+            id={`study-card-${study.id}`}
             className={`relative rounded-lg overflow-hidden transition-all duration-300 bg-slate-800/90 bg-gradient-to-r ${styles.bg} border-l-[3px] ${styles.border} ${styles.shadow} ${expanded ? 'shadow-2xl shadow-black/50 border-t border-r border-b border-white/10' : 'border-t border-r border-b border-transparent hover:border-white/5'}`}
         >
 
@@ -147,10 +154,34 @@ export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
                             {!study.instrument && (
                                 <p className="text-[10px] text-slate-400 mt-0.5 font-medium uppercase tracking-wider">{typeInfo.label}</p>
                             )}
+                            {/* Created Date Display */}
+                            <p className="text-[9px] text-slate-500 mt-0.5">
+                                Created: {new Date(study.created_at).toLocaleDateString()}
+                            </p>
                         </div>
                     </div>
 
-                    <div className="text-right">
+                    <div className="flex gap-2">
+                        <button
+                            onClick={handleShare}
+                            className="text-gray-400 hover:text-blue-500 transition-colors z-20 relative"
+                            title="Share Study"
+                        >
+                            <Share2 className="w-4 h-4" />
+                        </button>
+                        <button
+                            onClick={handleDelete}
+                            className="text-gray-400 hover:text-red-500 transition-colors z-20 relative"
+                            title="Delete study"
+                        >
+                            <Trash2 className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+
+                <div className="flex justify-between items-start mb-2 px-2">
+                    {/* Price Block (Moved down slightly or kept separate) */}
+                    <div className="w-full text-right">
                         {study.price ? (
                             <>
                                 <div className="text-sm font-bold text-white tabular-nums leading-tight tracking-tight">
@@ -192,111 +223,126 @@ export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
             </div>
 
             {/* Expanded Content Area */}
-            {expanded && (
-                <div className="px-5 pb-5 pt-0 animate-in slide-in-from-top-1 duration-200">
-                    <hr className="border-white/5 mb-4" />
+            {
+                expanded && (
+                    <div className="px-5 pb-5 pt-0 animate-in slide-in-from-top-1 duration-200">
+                        <hr className="border-white/5 mb-4" />
 
-                    <div className="prose prose-sm prose-invert max-w-none mb-4 text-slate-300 text-sm leading-relaxed">
-                        <p className="whitespace-pre-wrap">{study.content}</p>
-                    </div>
-
-                    {/* Images */}
-                    {study.images && study.images.length > 0 && (
-                        <div className="grid grid-cols-2 gap-2 mb-4">
-                            {study.images.map((img, idx) => (
-                                <div
-                                    key={idx}
-                                    onClick={(e) => { e.stopPropagation(); setSelectedImage(img); }}
-                                    className="aspect-video relative rounded-lg overflow-hidden border border-white/10 bg-black/20 cursor-zoom-in group/img"
-                                >
-                                    <img
-                                        src={img}
-                                        alt="Analysis"
-                                        className="w-full h-full object-cover opacity-90 group-hover/img:opacity-100 transition-all duration-300 group-hover/img:scale-105"
-                                    />
-                                </div>
-                            ))}
+                        <div className="prose prose-sm prose-invert max-w-none mb-4 text-slate-300 text-sm leading-relaxed">
+                            <p className="whitespace-pre-wrap">{study.content}</p>
                         </div>
-                    )}
 
-                    {/* Action Bar */}
-                    <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-white/5">
-                        {/* ... existing buttons ... */}
-                        {/* Outcome Buttons */}
-                        {!isCompleted ? (
-                            <>
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); handleStatusUpdate('COMPLETED', 'SUCCESS'); }}
-                                    className="bg-slate-800 hover:bg-emerald-600 active:scale-95 text-white shadow-sm border border-white/5 hover:border-transparent text-[10px] font-bold uppercase tracking-wider py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2"
-                                >
-                                    <CheckCircle className="w-3.5 h-3.5" />
-                                    Success
-                                </button>
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); handleStatusUpdate('COMPLETED', 'FAILURE'); }}
-                                    className="bg-slate-800 hover:bg-rose-600 active:scale-95 text-white shadow-sm border border-white/5 hover:border-transparent text-[10px] font-bold uppercase tracking-wider py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2"
-                                >
-                                    <XCircle className="w-3.5 h-3.5" />
-                                    Failure
-                                </button>
-                            </>
-                        ) : (
-                            <div className="flex-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-800 py-2 px-3 rounded-lg justify-center border border-white/5">
-                                {study.outcome === 'SUCCESS' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : study.outcome === 'FAILURE' ? <XCircle className="w-3.5 h-3.5 text-rose-400" /> : <Archive className="w-3.5 h-3.5" />}
-                                {study.outcome || 'Completed'}
+                        {/* Images */}
+                        {study.images && study.images.length > 0 && (
+                            <div className="grid grid-cols-2 gap-2 mb-4">
+                                {study.images.map((img, idx) => (
+                                    <div
+                                        key={idx}
+                                        onClick={(e) => { e.stopPropagation(); setSelectedImage(img); }}
+                                        className="aspect-video relative rounded-lg overflow-hidden border border-white/10 bg-black/20 cursor-zoom-in group/img"
+                                    >
+                                        <img
+                                            src={img}
+                                            alt="Analysis"
+                                            className="w-full h-full object-cover opacity-90 group-hover/img:opacity-100 transition-all duration-300 group-hover/img:scale-105"
+                                        />
+                                    </div>
+                                ))}
                             </div>
                         )}
 
-                        <div className="flex-1"></div>
+                        {/* Action Bar */}
+                        <div className="flex flex-wrap items-center gap-2 mt-4 pt-3 border-t border-white/5">
+                            {/* ... existing buttons ... */}
+                            {/* Outcome Buttons */}
+                            {!isCompleted ? (
+                                <>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleStatusUpdate('COMPLETED', 'SUCCESS'); }}
+                                        className="bg-slate-800 hover:bg-emerald-600 active:scale-95 text-white shadow-sm border border-white/5 hover:border-transparent text-[10px] font-bold uppercase tracking-wider py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <CheckCircle className="w-3.5 h-3.5" />
+                                        Success
+                                    </button>
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); handleStatusUpdate('COMPLETED', 'FAILURE'); }}
+                                        className="bg-slate-800 hover:bg-rose-600 active:scale-95 text-white shadow-sm border border-white/5 hover:border-transparent text-[10px] font-bold uppercase tracking-wider py-2 px-4 rounded-lg transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <XCircle className="w-3.5 h-3.5" />
+                                        Failure
+                                    </button>
+                                </>
+                            ) : (
+                                <div className="flex-1 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-slate-400 bg-slate-800 py-2 px-3 rounded-lg justify-center border border-white/5">
+                                    {study.outcome === 'SUCCESS' ? <CheckCircle className="w-3.5 h-3.5 text-emerald-400" /> : study.outcome === 'FAILURE' ? <XCircle className="w-3.5 h-3.5 text-rose-400" /> : <Archive className="w-3.5 h-3.5" />}
+                                    {study.outcome || 'Completed'}
+                                </div>
+                            )}
 
-                        {/* Add to Watchlist */}
-                        {study.instrument && !isCompleted && (
-                            <button
-                                onClick={handleAddToWatchlist}
-                                disabled={loading}
-                                className="p-2 bg-slate-800 hover:bg-blue-600 active:scale-95 text-slate-400 hover:text-white rounded-lg border border-white/5 hover:border-transparent transition-all shadow-sm"
-                                title="Add to Watchlist"
-                            >
-                                <Eye className="w-4 h-4" />
-                            </button>
-                        )}
+                            <div className="flex-1"></div>
 
-                        {/* Edit / Delete */}
-                        <div className="flex items-center gap-2">
-                            <Link href={`/dashboard/studies/${study.id}`} className="p-2 bg-slate-800 hover:bg-indigo-600 active:scale-95 text-slate-400 hover:text-white rounded-lg border border-white/5 hover:border-transparent transition-all shadow-sm">
-                                <Edit2 className="w-4 h-4" />
-                            </Link>
-                            <button
-                                onClick={handleDelete}
-                                className="p-2 bg-slate-800 hover:bg-rose-600 active:scale-95 text-slate-400 hover:text-white rounded-lg border border-white/5 hover:border-transparent transition-all shadow-sm"
-                            >
-                                <Trash2 className="w-4 h-4" />
-                            </button>
+                            {/* Add to Watchlist */}
+                            {study.instrument && !isCompleted && (
+                                <button
+                                    onClick={handleAddToWatchlist}
+                                    disabled={loading}
+                                    className="p-2 bg-slate-800 hover:bg-blue-600 active:scale-95 text-slate-400 hover:text-white rounded-lg border border-white/5 hover:border-transparent transition-all shadow-sm"
+                                    title="Add to Watchlist"
+                                >
+                                    <Eye className="w-4 h-4" />
+                                </button>
+                            )}
+
+                            {/* Edit / Delete */}
+                            <div className="flex items-center gap-2">
+                                <Link href={`/dashboard/studies/${study.id}`} className="p-2 bg-slate-800 hover:bg-indigo-600 active:scale-95 text-slate-400 hover:text-white rounded-lg border border-white/5 hover:border-transparent transition-all shadow-sm">
+                                    <Edit2 className="w-4 h-4" />
+                                </Link>
+                                <button
+                                    onClick={handleDelete}
+                                    className="p-2 bg-slate-800 hover:bg-rose-600 active:scale-95 text-slate-400 hover:text-white rounded-lg border border-white/5 hover:border-transparent transition-all shadow-sm"
+                                >
+                                    <Trash2 className="w-4 h-4" />
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )
+            }
 
             {/* Lightbox / Zoom User Interface */}
-            {selectedImage && (
-                <div
-                    className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
-                    onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
-                >
-                    <button
-                        className="absolute top-6 right-6 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all"
-                        onClick={() => setSelectedImage(null)}
+            {
+                selectedImage && (
+                    <div
+                        className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-200"
+                        onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
                     >
-                        <XCircle className="w-10 h-10" />
-                    </button>
-                    <img
-                        src={selectedImage}
-                        alt="Zoomed Chart"
-                        className="max-w-[95vw] max-h-[95vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200 select-none"
-                        onClick={(e) => e.stopPropagation()}
-                    />
-                </div>
-            )}
-        </div>
+                        <button
+                            className="absolute top-6 right-6 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all"
+                            onClick={() => setSelectedImage(null)}
+                        >
+                            <XCircle className="w-10 h-10" />
+                        </button>
+                        <img
+                            src={selectedImage}
+                            alt="Zoomed Chart"
+                            className="max-w-[95vw] max-h-[95vh] object-contain rounded-lg shadow-2xl animate-in zoom-in-95 duration-200 select-none"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
+                )
+            }
+
+            {/* Share Modal */}
+            <SocialShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                title={`Analysis: ${study.title}`}
+                instrument={study.instrument || 'Market'}
+                variant="study"
+                data={study}
+                shareText={`📊 My Analysis: ${study.title}\n\n"${study.content.substring(0, 100)}${study.content.length > 100 ? '...' : ''}"\n\nRead full analysis on Traders Diary: https://tradediary.equitymarvels.com`}
+            />
+        </div >
     );
 }

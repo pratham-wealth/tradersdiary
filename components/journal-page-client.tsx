@@ -7,14 +7,25 @@ import { TradeCard, Trade } from '@/components/trade-card';
 import { TradeList } from '@/components/trade-list';
 import { Strategy } from '@/components/strategy-card';
 import { Study } from '@/components/study-card';
-import { WatchItem } from '@/components/watch-card';
 import { BookOpen } from 'lucide-react';
+
+// Define the shape expected by AddTradeForm
+interface PreFillWatchItem {
+    instrument: string;
+    direction: string;
+    entry_level: number | null;
+    stop_loss: number | null;
+    target_price: number | null;
+    strategy_id?: string;
+    study_id?: string;
+    created_at?: string;
+}
 
 interface JournalPageProps {
     initialTrades: Trade[];
     strategies: Strategy[];
     studies: Study[];
-    initialWatchItem?: WatchItem;
+    initialWatchItem?: PreFillWatchItem;
 }
 
 export default function JournalPageClient({ initialTrades, strategies, studies, initialWatchItem }: JournalPageProps) {

@@ -37,6 +37,12 @@ export function ShareWithSocials({ title, text, url = 'https://tradenote.app', h
             href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
             color: 'bg-blue-600 text-white hover:bg-blue-700',
         },
+        {
+            name: 'Telegram',
+            icon: MessageCircle,
+            href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
+            color: 'bg-blue-500 text-white hover:bg-blue-600',
+        },
     ];
 
     const handleCopy = () => {
