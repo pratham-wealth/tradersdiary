@@ -277,4 +277,27 @@ export async function deleteBook(id: string, pdfPath: string, coverUrl: string |
 
 // ... (keep existing imports)
 
+
+export async function getBookById(id: string) {
+    const supabase = await createAdminClient();
+
+    const { data: book, error } = await supabase
+        .from('user_books')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error || !book) {
+        return null;
+    }
+
+    // RESTRICTION: Only Global (Admin) or Paid/Premium Books are shareable.
+    // logic: if not global AND not premium/paid -> return null (block private content)
+    if (!book.is_global && book.access_level !== 'premium' && book.access_level !== 'paid') {
+        return null;
+    }
+
+    return book as UserBook;
+}
+
 // End of file
