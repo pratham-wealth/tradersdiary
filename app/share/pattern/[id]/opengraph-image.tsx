@@ -2,7 +2,7 @@
 import { ImageResponse } from 'next/og';
 import { getPatternById } from '@/app/dashboard/learn/actions';
 
-export const runtime = 'edge';
+export const runtime = 'nodejs';
 
 // Font configuration (if you had custom fonts, but using system sans for simplicity/reliability in this env)
 
