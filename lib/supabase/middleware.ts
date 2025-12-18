@@ -8,9 +8,8 @@ export async function updateSession(request: NextRequest) {
         },
     });
 
-    // Skip Supabase middleware if credentials aren't configured yet
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-        return response;
+        return { response, user: null };
     }
 
     const supabase = createServerClient(
@@ -59,8 +58,8 @@ export async function updateSession(request: NextRequest) {
         }
     );
 
-    // Refresh session if expired
-    await supabase.auth.getUser();
+    // Refresh session if expired - and return user
+    const { data: { user } } = await supabase.auth.getUser();
 
-    return response;
+    return { response, user };
 }

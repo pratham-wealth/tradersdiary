@@ -1,14 +1,9 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
-import { createClient } from '@/lib/supabase/server';
 
 export async function middleware(request: NextRequest) {
-    // Update Supabase session
-    const response = await updateSession(request);
-
-    // Get authenticated user
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
+    // Update Supabase session and get user
+    const { response, user } = await updateSession(request);
 
     const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
     const isDashboard = request.nextUrl.pathname.startsWith('/dashboard');
