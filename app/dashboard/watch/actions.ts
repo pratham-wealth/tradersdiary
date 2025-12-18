@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
 import { WatchItem } from '@/components/watch-card';
@@ -67,7 +67,6 @@ export async function addWatchItem(formData: FormData) {
         stop_loss: stopLoss,
         target_price: targetPrice,
         breakout_level: breakoutLevel,
-        breakout_level: breakoutLevel,
         // support_level: supportLevel, // Schema mismatch: column missing in Prod DB
         // resistance_level: resistanceLevel, // Schema mismatch: column missing in Prod DB
         notes,
@@ -110,7 +109,6 @@ export async function updateWatchItem(id: string, formData: FormData) {
             entry_level: entryLevel,
             stop_loss: stopLoss,
             target_price: targetPrice,
-            breakout_level: breakoutLevel,
             breakout_level: breakoutLevel,
             // support_level: supportLevel,
             // resistance_level: resistanceLevel,
@@ -170,4 +168,23 @@ export async function deleteWatchItem(id: string) {
 
     revalidatePath('/dashboard/watch');
     return { success: true };
+}
+
+export async function getWatchItemById(id: string) {
+    const supabase = await createClient(); // Try normal client first for RLS check? No, we need public access.
+    // Wait, patterns/studies use createAdminClient for public access.
+    // We need createAdminClient here too.
+    const adminSupabase = await createAdminClient();
+
+    const { data: item, error } = await adminSupabase
+        .from('watch_list')
+        .select('*, strategy:strategies(id, name), study:studies(id, title)')
+        .eq('id', id)
+        .single();
+
+    if (error || !item) {
+        return null;
+    }
+
+    return item as WatchItem;
 }
