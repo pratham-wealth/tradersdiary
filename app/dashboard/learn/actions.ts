@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 
 export interface LearningPattern {
     id: string;
@@ -55,7 +55,7 @@ export async function getPatternsByType(type: 'CHART' | 'CANDLESTICK'): Promise<
 }
 
 export async function getPatternById(id: string): Promise<LearningPattern | null> {
-    const supabase = await createClient();
+    const supabase = await createAdminClient();
 
     const { data: pattern, error } = await supabase
         .from('learning_patterns')
