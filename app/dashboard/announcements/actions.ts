@@ -33,9 +33,26 @@ export async function getLatestAnnouncement(): Promise<Announcement | null> {
 export async function createAnnouncement(message: string, type: 'info' | 'warning' | 'success' | 'alert' = 'info') {
     // 1. Auth Check (Standard Client)
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
 
-    if (!user) return { error: 'Not authenticated' };
+    // Try getUser first (more secure)
+    const { data: { user }, error: userError } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+        console.error('getUser failed:', userError);
+
+        // Fallback to getSession (less secure but helps debug)
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+        if (sessionError || !session?.user) {
+            console.error('getSession failed:', sessionError);
+            return { error: `Not Authenticated: ${userError?.message || sessionError?.message || 'No User'}` };
+        }
+
+        // If session works, use that user (Edge case where getUser fails but session exists)
+        // ideally we shouldn't rely on this but to unblock the user:
+        // const user = session.user; // Scope issue, let's just return error for now to see MESSAGE.
+        return { error: `Auth Error (getUser): ${userError?.message}` };
+    }
 
     // 2. Admin Operations (Service Role Client - Bypasses RLS)
     const adminSupabase = await createAdminClient();

@@ -159,83 +159,74 @@ export function SocialShareModal({ isOpen, onClose, children, title = "Trade Set
 
         if (variant === 'study' && data) {
             return (
-                <div className={`flex flex-col h-full ${isForCapture ? 'p-8 gap-6' : 'gap-0'}`}>
+                <div className={`flex flex-col h-full ${isForCapture ? 'p-10 gap-8' : 'gap-6'}`}>
                     {/* Header Section */}
-                    <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center justify-between shrink-0">
                         <div>
                             <span className="text-xs text-indigo-400 font-bold tracking-widest uppercase mb-1 block">Market Analysis</span>
-                            <h3 className={`${isForCapture ? 'text-5xl mb-2' : 'text-3xl'} font-black text-white tracking-tight leading-tight`}>
+                            <h3 className={`${isForCapture ? 'text-4xl' : 'text-2xl'} font-black text-white tracking-tight leading-tight`}>
                                 {data.title}
                             </h3>
                         </div>
+                        {/* Header Badge */}
+                        <div className={`px-4 py-2 rounded-lg flex items-center gap-2 ${data.direction === 'LONG' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : data.direction === 'SHORT' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-slate-700/50 text-slate-400 border border-white/5'}`}>
+                            <span className={`${isForCapture ? 'text-2xl' : 'text-sm'} font-bold uppercase`}>{data.direction || 'NEUTRAL'}</span>
+                        </div>
                     </div>
 
-                    {/* Landscape Grid Layout */}
-                    <div className={`grid gap-6 ${data.images && data.images.length > 0 ? 'grid-cols-5' : 'grid-cols-1'} ${isForCapture ? 'flex-1' : ''}`}>
+                    {/* Vertical Layout: Image First, then Data/Content */}
 
-                        {/* Left Column: Chart (Span 3) */}
-                        {data.images && data.images.length > 0 && (
-                            <div className="col-span-3 flex flex-col">
-                                <div className="rounded-xl overflow-hidden border border-white/10 shadow-2xl relative bg-black/50 flex flex-col justify-center h-full">
-                                    <img
-                                        src={data.images[0]}
-                                        alt="Chart"
-                                        className="w-full h-auto object-contain max-h-[400px]" // Limit height slightly
-                                        crossOrigin="anonymous"
-                                    />
-                                </div>
+                    {/* Image Section (Main Focus) */}
+                    {data.images && data.images.length > 0 && (
+                        <div className={`w-full rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black/50 flex items-center justify-center ${isForCapture ? 'min-h-[400px] max-h-[600px] flex-1' : 'aspect-video'}`}>
+                            <img
+                                src={data.images[0]}
+                                alt="Chart"
+                                className="w-full h-full object-contain"
+                                crossOrigin="anonymous"
+                            />
+                        </div>
+                    )}
+
+                    {/* Data Bar (Under Image) */}
+                    <div className="flex flex-wrap gap-4 shrink-0">
+                        {data.price && (
+                            <div className="px-4 py-2 rounded-lg bg-slate-800/50 border border-white/5 flex items-center gap-3">
+                                <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">CMP</span>
+                                <span className={`${isForCapture ? 'text-2xl' : 'text-lg'} font-bold text-white tabular-nums`}>₹{data.price.toFixed(2)}</span>
                             </div>
                         )}
-
-                        {/* Right Column: Data & Text (Span 2) */}
-                        <div className={`${data.images && data.images.length > 0 ? 'col-span-2' : 'col-span-1'} flex flex-col gap-4`}>
-
-                            {/* Data Bar */}
-                            <div className="flex flex-wrap gap-2">
-                                <div className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 ${data.direction === 'LONG' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : data.direction === 'SHORT' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-slate-700/50 text-slate-400 border border-white/5'}`}>
-                                    {/* Capture mode larger text */}
-                                    <span className={`${isForCapture ? 'text-xl' : 'text-sm'} font-bold uppercase`}>{data.direction || 'NEUTRAL'}</span>
-                                </div>
-                                {data.price && (
-                                    <div className="px-3 py-1.5 rounded-lg bg-slate-800/50 border border-white/5 flex items-center gap-2">
-                                        <span className="text-[10px] text-slate-500 uppercase font-bold">CMP</span>
-                                        <span className={`${isForCapture ? 'text-xl' : 'text-sm'} font-bold text-white tabular-nums`}>₹{data.price.toFixed(2)}</span>
-                                    </div>
-                                )}
-                                {data.probability && (
-                                    <div className={`px-3 py-1.5 rounded-lg border border-white/5 flex items-center gap-2 ${data.probability === 'HIGH' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-slate-800/50 text-slate-400'}`}>
-                                        <span className="text-[10px] opacity-70 uppercase font-bold">Prob</span>
-                                        <span className={`${isForCapture ? 'text-xl' : 'text-sm'} font-bold uppercase`}>{data.probability.replace('_', ' ')}</span>
-                                    </div>
-                                )}
+                        {data.probability && (
+                            <div className={`px-4 py-2 rounded-lg border border-white/5 flex items-center gap-3 ${data.probability === 'HIGH' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-slate-800/50 text-slate-400'}`}>
+                                <span className="text-xs opacity-70 uppercase font-bold tracking-wider">Prob</span>
+                                <span className={`${isForCapture ? 'text-2xl' : 'text-lg'} font-bold uppercase`}>{data.probability.replace('_', ' ')}</span>
                             </div>
+                        )}
+                    </div>
 
-                            {/* Content Text */}
-                            <div className="bg-slate-800/30 p-5 rounded-xl border border-white/5 relative flex-1 flex flex-col">
-                                <p className={`text-slate-300 font-medium whitespace-pre-wrap ${isForCapture
-                                        ? 'text-sm leading-relaxed' // Fixed size for capture
-                                        : data.content.length > 800 ? 'text-[10px] leading-relaxed'
-                                            : data.content.length > 400 ? 'text-xs leading-relaxed'
-                                                : 'text-sm leading-relaxed'
-                                    }`}>
-                                    {data.content}
-                                </p>
-                            </div>
-                        </div>
+                    {/* Content Text (Footer of the logic) */}
+                    <div className="bg-slate-800/30 p-6 rounded-xl border border-white/5 relative shrink-0">
+                        <span className="absolute -top-3 left-6 px-2 bg-slate-900 text-[10px] text-slate-400 uppercase tracking-widest border border-white/5 rounded">Logic</span>
+                        <p className={`text-slate-300 font-medium whitespace-pre-wrap ${isForCapture
+                            ? 'text-lg leading-relaxed'
+                            : 'text-sm leading-relaxed max-h-[150px] overflow-y-auto'
+                            }`}>
+                            {data.content}
+                        </p>
                     </div>
 
                     {/* Footer specific for Capture */}
                     {isForCapture && (
-                        <div className="mt-auto pt-4 flex items-center justify-between border-t border-white/5">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-500/20">TD</div>
+                        <div className="mt-auto pt-6 flex items-center justify-between border-t border-white/5 shrink-0">
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/20">TD</div>
                                 <div>
-                                    <div className="text-sm font-bold text-white">Traders Diary</div>
-                                    <div className="text-[10px] text-slate-400">https://tradediary.equitymarvels.com</div>
+                                    <div className="text-lg font-bold text-white">Traders Diary</div>
+                                    <div className="text-sm text-slate-400">tradediary.equitymarvels.com</div>
                                 </div>
                             </div>
-                            <div className="text-xs text-slate-500 opacity-75">
-                                PUBLISHED: {new Date(data.created_at).toLocaleDateString()}
+                            <div className="text-sm text-slate-500 opacity-75 font-mono">
+                                {new Date(data.created_at).toLocaleDateString()}
                             </div>
                         </div>
                     )}

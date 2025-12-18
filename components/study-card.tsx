@@ -341,7 +341,8 @@ export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
                 instrument={study.instrument || 'Market'}
                 variant="study"
                 data={study}
-                shareText={`📊 My Analysis: ${study.title}\n\n"${study.content.substring(0, 100)}${study.content.length > 100 ? '...' : ''}"\n\nRead full analysis on Traders Diary: https://tradediary.equitymarvels.com`}
+                shareText={`📊 My Analysis: ${study.title}\n\n"${study.content.substring(0, 100)}${study.content.length > 100 ? '...' : ''}"\n\nRead full analysis on Traders Diary: https://tradediary.equitymarvels.com/share/study/${study.id}`}
+                shareUrl={`https://tradediary.equitymarvels.com/share/study/${study.id}`}
             />
         </div >
     );

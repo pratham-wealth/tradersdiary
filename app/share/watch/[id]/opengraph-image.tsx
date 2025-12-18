@@ -115,6 +115,39 @@ export default async function Image({ params }: { params: { id: string } }) {
                         </div>
                     </div>
 
+                    {/* Logic / Notes (Missing in previous version) */}
+                    {item.notes && (
+                        <div style={{
+                            backgroundColor: 'rgba(30, 41, 59, 0.3)',
+                            borderRadius: '24px',
+                            padding: '30px',
+                            marginBottom: '40px',
+                            border: '1px solid rgba(255,255,255,0.05)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            position: 'relative'
+                        }}>
+                            <div style={{
+                                position: 'absolute',
+                                top: '-15px',
+                                left: '30px',
+                                backgroundColor: '#0F172A',
+                                color: '#94A3B8',
+                                fontSize: 16,
+                                fontWeight: 'bold',
+                                padding: '5px 15px',
+                                borderRadius: '8px',
+                                textTransform: 'uppercase',
+                                border: '1px solid rgba(255,255,255,0.1)'
+                            }}>
+                                Logic
+                            </div>
+                            <span style={{ fontSize: 24, color: '#CBD5E1', lineHeight: 1.5, fontStyle: 'italic' }}>
+                                "{item.notes}"
+                            </span>
+                        </div>
+                    )}
+
                     {/* Footer */}
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '2px solid rgba(255,255,255,0.1)', paddingTop: '40px' }}>
                         <div style={{ display: 'flex', flexDirection: 'column' }}>

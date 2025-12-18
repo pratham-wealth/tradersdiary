@@ -100,34 +100,34 @@ export default async function Image({ params }: { params: { id: string } }) {
                         </div>
                     </div>
 
-                    {/* Content Area: Chart and Description */}
-                    <div style={{ display: 'flex', flex: 1, gap: '40px' }}>
+                    {/* Main Content Area: Vertical Stack */}
+                    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, gap: '30px' }}>
 
-                        {/* Left: Chart Image Container */}
+                        {/* Chart Image Container (Prominent) */}
                         <div style={{
-                            flex: 1.4,
+                            flex: 1,
+                            minHeight: '300px',
                             display: 'flex',
                             backgroundColor: '#0F172A', // Slate-900
-                            borderRadius: '20px',
+                            borderRadius: '24px',
                             border: '1px solid rgba(255,255,255,0.1)',
                             overflow: 'hidden',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            position: 'relative'
+                            position: 'relative',
+                            boxShadow: '0 20px 40px -10px rgba(0,0,0,0.5)'
                         }}>
                             {/* Grid Lines Mock */}
-                            <div style={{ position: 'absolute', top: 20, left: 0, right: 0, height: 1, background: 'rgba(255,255,255,0.05)' }} />
-                            <div style={{ position: 'absolute', top: 60, left: 0, right: 0, height: 1, background: 'rgba(255,255,255,0.05)' }} />
-                            <div style={{ position: 'absolute', top: 100, left: 0, right: 0, height: 1, background: 'rgba(255,255,255,0.05)' }} />
+                            <div style={{ position: 'absolute', top: 40, left: 0, right: 0, height: 1, background: 'rgba(255,255,255,0.05)' }} />
+                            <div style={{ position: 'absolute', top: 120, left: 0, right: 0, height: 1, background: 'rgba(255,255,255,0.05)' }} />
 
                             {pattern.image_url ? (
                                 <img
                                     src={pattern.image_url}
-                                    width="500" // Constrain logic
                                     style={{
-                                        objectFit: 'contain',
-                                        maxWidth: '100%',
-                                        maxHeight: '100%'
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'contain'
                                     }}
                                 />
                             ) : (
@@ -135,30 +135,29 @@ export default async function Image({ params }: { params: { id: string } }) {
                             )}
                         </div>
 
-                        {/* Right: Info Column */}
-                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-
-                            {/* Type & Status */}
+                        {/* Mid Row: Tags and Description */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                            {/* Tags Row */}
                             <div style={{ display: 'flex', gap: '15px' }}>
                                 <div style={{
-                                    padding: '10px 20px',
-                                    backgroundColor: '#1E293B',
+                                    padding: '8px 20px',
+                                    backgroundColor: 'rgba(30, 41, 59, 0.5)',
                                     borderRadius: '12px',
                                     fontSize: 18,
                                     fontWeight: 'bold',
                                     color: '#94A3B8',
-                                    border: '1px solid rgba(255,255,255,0.05)'
+                                    border: '1px solid rgba(255,255,255,0.1)'
                                 }}>
                                     {pattern.type}
                                 </div>
                                 <div style={{
-                                    padding: '10px 20px',
-                                    backgroundColor: '#1E293B',
+                                    padding: '8px 20px',
+                                    backgroundColor: isPremium ? 'rgba(244, 63, 94, 0.1)' : 'rgba(30, 41, 59, 0.5)',
                                     borderRadius: '12px',
                                     fontSize: 18,
                                     fontWeight: 'bold',
                                     color: isPremium ? '#F43F5E' : '#94A3B8',
-                                    border: '1px solid rgba(255,255,255,0.05)'
+                                    border: `1px solid ${isPremium ? 'rgba(244, 63, 94, 0.2)' : 'rgba(255,255,255,0.1)'}`
                                 }}>
                                     {isPremium ? 'PREMIUM' : 'FREE'}
                                 </div>
@@ -166,31 +165,17 @@ export default async function Image({ params }: { params: { id: string } }) {
 
                             {/* Description Box */}
                             <div style={{
-                                flex: 1,
-                                backgroundColor: 'rgba(30, 41, 59, 0.4)',
+                                backgroundColor: 'rgba(30, 41, 59, 0.3)',
                                 borderRadius: '20px',
-                                padding: '25px',
+                                padding: '30px',
                                 border: '1px solid rgba(255,255,255,0.05)',
                                 display: 'flex',
                                 flexDirection: 'column'
                             }}>
-                                <span style={{ fontSize: 13, color: '#64748B', fontWeight: 'bold', textTransform: 'uppercase', marginBottom: '8px' }}>Description</span>
-                                <span style={{
-                                    fontSize: 22,
-                                    color: 'white',
-                                    lineHeight: 1.5,
-                                    display: '-webkit-box',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis'
-                                }}>
-                                    {pattern.description ? (
-                                        pattern.description.length > 180
-                                            ? pattern.description.substring(0, 180) + '...'
-                                            : pattern.description
-                                    ) : 'Master this trading setup using our comprehensive guide.'}
+                                <span style={{ fontSize: 24, color: '#CBD5E1', lineHeight: 1.5, display: '-webkit-box', overflow: 'hidden', textOverflow: 'ellipsis', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                                    {pattern.description || 'Master this trading setup using our comprehensive guide.'}
                                 </span>
                             </div>
-
                         </div>
                     </div>
 
