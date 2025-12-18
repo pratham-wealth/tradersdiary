@@ -1,6 +1,8 @@
 import { useState, useRef } from 'react';
 import { X, Share2, Download, Copy, Check } from 'lucide-react';
 import html2canvas from 'html2canvas';
+import { WatchCardView } from './share/watch-card-view';
+import { StudyCardView } from './share/study-card-view';
 
 interface SocialShareModalProps {
     isOpen: boolean;
@@ -286,8 +288,18 @@ export function SocialShareModal({ isOpen, onClose, children, title = "Trade Set
                             fontFamily: 'sans-serif'
                         }}
                     >
-                        {/* We modify the renderContent slightly or wrap it to fill space properly */}
-                        {renderContent(true)}
+
+                        {/* We use the shared visual component for identity between download and link preview */}
+                        {variant === 'watchlist' && data ? (
+                            <WatchCardView item={{
+                                ...data,
+                                direction: data.direction as 'LONG' | 'SHORT'
+                            }} />
+                        ) : variant === 'study' && data ? (
+                            <StudyCardView data={data} />
+                        ) : (
+                            renderContent(true)
+                        )}
                     </div>
                 </div>
 
