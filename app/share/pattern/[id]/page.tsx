@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
         openGraph: {
             title: `Master the ${pattern.name} Pattern | Win Rate: ${pattern.success_ratio}`,
             description: pattern.understanding?.substring(0, 150) + '...',
-            images: pattern.image_url ? [pattern.image_url] : ['https://tradenote.app/og-image.jpg'], // Fallback image if needed
+            images: pattern.image_url ? [pattern.image_url] : ['https://tradenote.app/og-image.jpg'], // Kept as fallback, but text is key
         },
         twitter: {
             card: 'summary_large_image',
@@ -37,6 +37,11 @@ export default async function SharePatternPage({ params }: Props) {
     const pattern = await getPatternById(id);
 
     if (!pattern) return notFound();
+
+    // Determine correct app link based on pattern type
+    const appLink = pattern.type === 'CANDLESTICK'
+        ? 'https://tradediary.equitymarvels.com/dashboard/learn/candlesticks'
+        : 'https://tradediary.equitymarvels.com/dashboard/learn/chart-patterns';
 
     return (
         <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
@@ -79,7 +84,7 @@ export default async function SharePatternPage({ params }: Props) {
 
                     <div className="pt-6">
                         <Link
-                            href="https://tradediary.equitymarvels.com/dashboard/learn/candlesticks"
+                            href={appLink}
                             className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12 rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-red-900/20"
                         >
                             Open in App <ArrowRight className="w-4 h-4" />

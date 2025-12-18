@@ -15,7 +15,8 @@ export function PatternCard({ pattern }: PatternCardProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     // Share Text
-    const shareText = `Mastering the ${pattern.name} pattern on TradeNote!\n\nSuccess Rate: ${pattern.success_ratio}\n\nLearn more and track your trading journey:`;
+    const shareText = `Mastering the ${pattern.name} pattern on Traders Diary!\n\nSuccess Rate: ${pattern.success_ratio}\n\nLearn more and track your trading journey:`;
+
 
     return (
         <>
@@ -109,7 +110,8 @@ export function PatternCard({ pattern }: PatternCardProps) {
                                 <ShareWithSocials
                                     title={`Master ${pattern.name}`}
                                     text={shareText}
-                                    url={`${typeof window !== 'undefined' ? window.location.origin : 'https://tradenote.app'}/share/pattern/${pattern.id}`}
+                                    url={`${typeof window !== 'undefined' ? window.location.origin : 'https://tradediary.equitymarvels.com'}/share/pattern/${pattern.id}`}
+
                                     hashTags={['trading', 'patterns', 'education']}
                                 />
 

@@ -10,7 +10,7 @@ interface ShareProps {
     hashTags?: string[];
 }
 
-export function ShareWithSocials({ title, text, url = 'https://tradenote.app', hashTags = ['trading', 'tradenote'] }: ShareProps) {
+export function ShareWithSocials({ title, text, url = 'https://tradediary.equitymarvels.com', hashTags = ['trading', 'tradersdiary'] }: ShareProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [copied, setCopied] = useState(false);
 
@@ -26,9 +26,15 @@ export function ShareWithSocials({ title, text, url = 'https://tradenote.app', h
             color: 'bg-black text-white hover:bg-gray-800',
         },
         {
+            name: 'Facebook',
+            icon: (props: any) => <svg {...props} fill="currentColor" viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036c-2.148 0-2.797 1.603-2.797 4.16v1.912h4.141l-.542 3.667h-3.599v7.98c0 .106.01.21.01.316a12.001 12.001 0 0 0 8.877-11.854C21.996 7.373 17.513 0 11.996 0S1.996 7.373 1.996 14.11a11.998 11.998 0 0 0 8.878 11.854c0-.106.011-.211.011-.316V23.691Z" /></svg>,
+            href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+            color: 'bg-blue-600 text-white hover:bg-blue-700',
+        },
+        {
             name: 'WhatsApp',
             icon: MessageCircle, // Using MessageCircle as generic chat icon
-            href: `https://wa.me/?text=${encodedText} ${encodedUrl}`,
+            href: `https://api.whatsapp.com/send?text=${encodedText} ${encodedUrl}`,
             color: 'bg-green-500 text-white hover:bg-green-600',
         },
         {
