@@ -21,13 +21,15 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
         openGraph: {
             title: `Master the ${pattern.name} Pattern | Win Rate: ${pattern.success_ratio}`,
             description: pattern.understanding?.substring(0, 150) + '...',
-            images: pattern.image_url ? [pattern.image_url] : ['https://tradenote.app/og-image.jpg'], // Kept as fallback, but text is key
+            url: `https://tradediary.equitymarvels.com/share/pattern/${id}`,
+            type: 'article',
+            // images: Automatically handled by opengraph-image.tsx
         },
         twitter: {
             card: 'summary_large_image',
             title: `${pattern.name} - Trading Strategy`,
             description: `Success Rate: ${pattern.success_ratio}. Learn the rules and logic behind this setup.`,
-            images: pattern.image_url ? [pattern.image_url] : [],
+            // images: Automatically handled by opengraph-image.tsx
         }
     };
 }
