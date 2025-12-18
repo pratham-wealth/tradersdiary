@@ -48,8 +48,8 @@ export function AnnouncementBanner({ announcement }: { announcement: Announcemen
                     <div className="flex-1 z-10">
                         <h4 className="font-bold text-white text-base tracking-tight mb-1 flex items-center gap-2">
                             System Announcement
-                            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/50 font-normal">
-                                {new Date(announcement.created_at).toLocaleDateString()}
+                            <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-white/50 font-normal suppress-hydration-date">
+                                {new Date(announcement.created_at).toISOString().split('T')[0]}
                             </span>
                         </h4>
                         <p className="text-slate-300 text-sm leading-relaxed">
