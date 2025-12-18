@@ -31,19 +31,23 @@ export async function getLatestAnnouncement(): Promise<Announcement | null> {
 }
 
 export async function createAnnouncement(message: string, type: 'info' | 'warning' | 'success' | 'alert' = 'info') {
-    const supabase = await createAdminClient(); // Admin only
+    // 1. Auth Check (Standard Client)
+    const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) return { error: 'Not authenticated' };
 
-    // 1. Deactivate all previous active announcements (so only one shows at a time)
-    await supabase
+    // 2. Admin Operations (Service Role Client - Bypasses RLS)
+    const adminSupabase = await createAdminClient();
+
+    // 3. Deactivate all previous active announcements
+    await adminSupabase
         .from('system_announcements')
         .update({ is_active: false })
         .eq('is_active', true);
 
-    // 2. Insert new one
-    const { error } = await supabase
+    // 4. Insert new one
+    const { error } = await adminSupabase
         .from('system_announcements')
         .insert({
             message,
