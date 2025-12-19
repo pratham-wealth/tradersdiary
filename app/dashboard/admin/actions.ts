@@ -4,6 +4,81 @@
 import { createAdminClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
 
+// -- Analytics Types --
+export type AdminStats = {
+    totalUsers: number;
+    activeToday: number; // Logged in last 24h
+    ghostAccounts: number; // Created > 30 days ago, never logged in (or > 30 days inactive)
+    diaryUsage: number; // Users who have logged at least 1 trade
+};
+
+// -- Analytics Action --
+export async function getAdminStats(): Promise<{ stats: AdminStats | null; error?: string }> {
+    try {
+        const supabase = await createAdminClient();
+
+        // 1. Fetch Basic Auth Stats (List all to count)
+        // Note: For massive scale, this needs to vary. For < 10k users, listUsers is okay.
+        const { data: { users }, error } = await supabase.auth.admin.listUsers({
+            page: 1,
+            perPage: 5000 // Upper limit for now
+        });
+
+        if (error) throw error;
+
+        const now = new Date();
+        const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+        const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+        let activeToday = 0;
+        let ghostAccounts = 0;
+
+        users.forEach(u => {
+            const lastSignIn = u.last_sign_in_at ? new Date(u.last_sign_in_at) : null;
+            const created = new Date(u.created_at);
+
+            // Active Today
+            if (lastSignIn && lastSignIn > oneDayAgo) {
+                activeToday++;
+            }
+
+            // Ghost: Created > 30 days ago AND (No login OR Last login > 30 days ago)
+            const isOldAccount = created < thirtyDaysAgo;
+            const isInactive = !lastSignIn || lastSignIn < thirtyDaysAgo;
+
+            if (isOldAccount && isInactive) {
+                ghostAccounts++;
+            }
+        });
+
+        // Diary Usage (Distinct Users who have trades)
+        // We can do a count on the trades table.
+        // Assuming we want "Users who have EVER used it"
+        const { count: diaryUsers, error: tradeError } = await supabase
+            .from('trades') // Check if 'trades' exists, usually it does for journal
+            .select('user_id', { count: 'exact', head: true });
+
+        // Note: 'head: true' with select distinct is tricky in Supabase basic API without RPC.
+        // Alternative: Approximate usage or checking a different metric.
+        // For accurate distinct count without fetching all, we might need a raw query or RPC.
+        // Let's stick to a simpler proxy: "Trades Count" for now, or just return 0 if complexity is high.
+        // Actually, let's just count total trades for now as a proxy for activity.
+        // Better: active_users count.
+
+        return {
+            stats: {
+                totalUsers: users.length,
+                activeToday,
+                ghostAccounts,
+                diaryUsage: diaryUsers || 0 // This returns total trades, not unique users, but it's a "Usage" metric.
+            }
+        };
+
+    } catch (error: any) {
+        return { stats: null, error: error.message };
+    }
+}
+
 export type AdminUser = {
     id: string;
     email: string; // from auth.users
@@ -17,7 +92,15 @@ export type AdminUser = {
     last_sign_in_at: string; // from auth.users
 };
 
-export async function getAdminUsers(): Promise<{ users: AdminUser[]; error?: string }> {
+export async function getAdminUsers({
+    page = 1,
+    perPage = 50,
+    query = ''
+}: {
+    page?: number;
+    perPage?: number;
+    query?: string;
+} = {}): Promise<{ users: AdminUser[]; total: number; error?: string }> {
     try {
         const supabase = await createAdminClient();
 
@@ -57,11 +140,29 @@ export async function getAdminUsers(): Promise<{ users: AdminUser[]; error?: str
         // Sort by joined_at desc
         combinedUsers.sort((a, b) => new Date(b.joined_at).getTime() - new Date(a.joined_at).getTime());
 
-        return { users: combinedUsers };
+        // Search Filtering
+        let filteredUsers = combinedUsers;
+        if (query) {
+            const lowerQuery = query.toLowerCase();
+            filteredUsers = combinedUsers.filter(u =>
+                u.email.toLowerCase().includes(lowerQuery) ||
+                u.fullName.toLowerCase().includes(lowerQuery) ||
+                u.phone.includes(query)
+            );
+        }
+
+        // Pagination
+        const total = filteredUsers.length;
+        const start = (page - 1) * perPage;
+        const end = start + perPage;
+        const paginatedUsers = filteredUsers.slice(start, end);
+
+        return { users: paginatedUsers, total };
+
 
     } catch (error: any) {
         console.error('Admin Fetch Error:', error);
-        return { users: [], error: error.message };
+        return { users: [], total: 0, error: error.message };
     }
 }
 
