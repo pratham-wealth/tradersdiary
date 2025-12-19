@@ -1,3 +1,5 @@
+import nodemailer from 'nodemailer';
+
 export async function sendRenewalEmail(to: string, name: string, plan: string, expiryDate: string, status: 'due_today' | 'due_week' | 'missed') {
     if (!process.env.SMTP_HOST) {
         console.error("SMTP_HOST is missing. Restart server to load .env.local changes.");
@@ -17,7 +19,8 @@ export async function sendRenewalEmail(to: string, name: string, plan: string, e
 
         const isMissed = status === 'missed';
         const deadlineColor = isMissed ? '#ef4444' : '#d4af37';
-        const statusText = isMissed ? 'EXPIRED' : 'ENDING SOON';
+        // 'missed' => 'EXPIRED', else 'ENDING SOON'
+        // But let's follow the previous logic exactly
 
         const html = `
 <!DOCTYPE html>
@@ -87,19 +90,20 @@ export async function sendRenewalEmail(to: string, name: string, plan: string, e
     </table>
 </body>
 </html>
-    `;
+        `;
 
-        try {
-            const info = await transporter.sendMail({
-                from: '"Traders Diary" <wealthacademy@equitymarvels.com>',
-                to,
-                subject: `Action Required: Renew Your ${plan} Subscription`,
-                html,
-            });
-            console.log("Message sent: %s", info.messageId);
-            return { success: true };
-        } catch (error) {
-            console.error("Error sending email:", error);
-            return { success: false, error: error };
-        }
+        const info = await transporter.sendMail({
+            from: '"Traders Diary" <wealthacademy@equitymarvels.com>',
+            to,
+            subject: `Action Required: Renew Your ${plan} Subscription`,
+            html,
+        });
+
+        console.log("Message sent: %s", info.messageId);
+        return { success: true };
+
+    } catch (error) {
+        console.error("Error sending email:", error);
+        return { success: false, error: error instanceof Error ? error.message : "Unknown Email Error" };
     }
+}
