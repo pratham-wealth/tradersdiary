@@ -64,7 +64,7 @@ const PRICING_TIERS = {
 
 export default function SubscriptionPage() {
     const router = useRouter();
-    const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
+    const [billingCycle, setBillingCycle] = useState<BillingCycle>('monthly');
     const [currency, setCurrency] = useState<Currency>('INR');
     const [loading, setLoading] = useState(false);
 
