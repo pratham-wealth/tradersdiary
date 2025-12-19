@@ -299,6 +299,14 @@ export type SalesSummary = {
         dueThisWeek: number;
         missed: number; // Expired in last 7 days
     };
+    renewalList: Array<{
+        id: string;
+        fullName: string;
+        email: string;
+        plan: string;
+        endDate: string;
+        status: 'due_today' | 'due_week' | 'missed';
+    }>;
     allTransactions: any[]; // For PDF Report
 };
 
@@ -329,7 +337,7 @@ export async function getSalesData(): Promise<{ data: SalesSummary | null; error
         const userIds = Array.from(new Set(payments.map(p => p.user_id)));
         const { data: userSettings, error: settingsError } = await supabase
             .from('user_settings')
-            .select('id, full_name, subscription_end, subscription_status')
+            .select('id, full_name, plan_type, subscription_end, subscription_status')
             .in('id', userIds.length > 0 ? userIds : ['00000000-0000-0000-0000-000000000000']); // Prevent empty IN error
 
         if (settingsError) throw settingsError;
@@ -347,22 +355,44 @@ export async function getSalesData(): Promise<{ data: SalesSummary | null; error
         // Optimization: Fetch ALL user_settings once for both usage.
         const { data: allUserSettings, error: allSettingsError } = await supabase
             .from('user_settings')
-            .select('id, full_name, subscription_end, subscription_status');
+            .select('id, full_name, plan_type, subscription_end, subscription_status');
 
         if (allSettingsError) throw allSettingsError;
 
         let dueToday = 0;
         let dueThisWeek = 0;
         let missed = 0;
+        const renewalList: SalesSummary['renewalList'] = [];
 
         allUserSettings.forEach(u => {
             if (!u.subscription_end) return;
             const endDate = new Date(u.subscription_end);
             endDate.setHours(0, 0, 0, 0);
 
-            if (endDate.getTime() === today.getTime()) dueToday++;
-            if (endDate >= today && endDate <= nextWeek) dueThisWeek++;
-            if (endDate < today && endDate >= lastWeek) missed++;
+            let status: 'due_today' | 'due_week' | 'missed' | null = null;
+
+            if (endDate.getTime() === today.getTime()) {
+                dueToday++;
+                status = 'due_today';
+            } else if (endDate >= today && endDate <= nextWeek) {
+                dueThisWeek++;
+                status = 'due_week';
+            } else if (endDate < today && endDate >= lastWeek) {
+                missed++;
+                status = 'missed';
+            }
+
+            if (status) {
+                const authUser = authUsers.find(au => au.id === u.id);
+                renewalList.push({
+                    id: u.id,
+                    fullName: u.full_name || 'Trader',
+                    email: authUser?.email || 'No Email',
+                    plan: u.plan_type || 'free',
+                    endDate: u.subscription_end,
+                    status
+                });
+            }
         });
 
         // 4. Calculate Sales Metrics
@@ -440,7 +470,8 @@ export async function getSalesData(): Promise<{ data: SalesSummary | null; error
                 allTransactions,
                 byGateway,
                 ...metrics,
-                renewals: { dueToday, dueThisWeek, missed }
+                renewals: { dueToday, dueThisWeek, missed },
+                renewalList // Add the list here
             }
         };
 

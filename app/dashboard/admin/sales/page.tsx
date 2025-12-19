@@ -1,5 +1,5 @@
 import { getSalesData } from '@/app/dashboard/admin/actions';
-import { CreditCard, IndianRupee, Activity, ShieldCheck, ArrowUpRight, Wallet, Calendar, AlertCircle, Clock } from 'lucide-react';
+import { CreditCard, IndianRupee, Activity, ShieldCheck, ArrowUpRight, Wallet, Calendar, AlertCircle, Clock, Mail } from 'lucide-react';
 import {
     Table,
     TableBody,
@@ -154,6 +154,90 @@ export default async function AdminSalesPage() {
                             <span className="text-xs text-red-200/70 font-medium uppercase break-words w-full">Missed</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Renewals List */}
+            <div className="bg-slate-900/50 backdrop-blur-sm rounded-xl border border-slate-800 shadow-xl overflow-hidden mb-8">
+                <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                    <div>
+                        <h3 className="font-bold text-white text-lg flex items-center gap-2">
+                            <Clock className="w-5 h-5 text-amber-500" />
+                            Upcoming Renewals & Expirations
+                        </h3>
+                        <p className="text-slate-400 text-sm mt-1">Users requiring attention for subscription renewal.</p>
+                    </div>
+                </div>
+
+                <div className="overflow-x-auto max-h-[400px]">
+                    <Table>
+                        <TableHeader className="bg-slate-950/50 sticky top-0 z-10 backdrop-blur-sm">
+                            <TableRow className="border-slate-800 hover:bg-transparent">
+                                <TableHead className="text-slate-400 font-medium">User</TableHead>
+                                <TableHead className="text-slate-400 font-medium">Plan</TableHead>
+                                <TableHead className="text-slate-400 font-medium">Expiry</TableHead>
+                                <TableHead className="text-slate-400 font-medium">Status</TableHead>
+                                <TableHead className="text-slate-400 font-medium text-right">Action</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {sales.renewalList?.map((user: any) => (
+                                <TableRow key={user.id} className="border-slate-800/50 hover:bg-slate-800/30 transition-colors">
+                                    <TableCell>
+                                        <div className="flex flex-col">
+                                            <span className="text-slate-200 font-medium text-sm">{user.fullName}</span>
+                                            <span className="text-slate-500 text-xs">{user.email}</span>
+                                        </div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <span className={cn(
+                                            "inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border",
+                                            user.plan === 'premium' ? "bg-purple-900/20 text-purple-300 border-purple-500/30" :
+                                                user.plan === 'pro' ? "bg-amber-900/20 text-amber-300 border-amber-500/30" :
+                                                    "bg-slate-800 text-slate-300 border-slate-700"
+                                        )}>
+                                            {user.plan}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell>
+                                        <span className="text-slate-300 font-mono text-sm">
+                                            {new Date(user.endDate).toLocaleDateString()}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell>
+                                        <span className={cn(
+                                            "inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-bold border",
+                                            user.status === 'due_today' ? "bg-amber-500/10 text-amber-400 border-amber-500/20" :
+                                                user.status === 'due_week' ? "bg-blue-500/10 text-blue-400 border-blue-500/20" :
+                                                    "bg-red-500/10 text-red-400 border-red-500/20"
+                                        )}>
+                                            {user.status === 'due_today' && <AlertCircle className="w-3 h-3" />}
+                                            {user.status === 'due_week' && <Clock className="w-3 h-3" />}
+                                            {user.status === 'missed' && <AlertCircle className="w-3 h-3" />}
+                                            {user.status === 'due_today' ? 'Due Today' :
+                                                user.status === 'due_week' ? 'Due Soon' : 'Expired'}
+                                        </span>
+                                    </TableCell>
+                                    <TableCell className="text-right">
+                                        <a
+                                            href={`mailto:${user.email}?subject=Important: Your ${user.plan === 'premium' ? 'Premium' : 'Pro'} Subscription Renewal&body=Hi ${user.fullName},%0D%0A%0D%0AWe noticed your ${user.plan} subscription is ${user.status === 'missed' ? 'expired' : 'ending soon'} on ${new Date(user.endDate).toLocaleDateString()}.%0D%0A%0D%0APlease renew to ensure uninterrupted access to your trading journal and analytics.%0D%0A%0D%0ARegards,%0D%0ATraders Diary Team`}
+                                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition-colors"
+                                        >
+                                            <Mail className="w-3 h-3" />
+                                            Notify
+                                        </a>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                            {(!sales.renewalList || sales.renewalList.length === 0) && (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center text-slate-500">
+                                        No upcoming renewals found.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
                 </div>
             </div>
 
