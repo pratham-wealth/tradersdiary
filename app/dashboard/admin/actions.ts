@@ -3,6 +3,7 @@
 
 import { createAdminClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { sendRenewalEmail } from '@/lib/email-service';
 
 // -- Analytics Types --
 export type AdminStats = {

@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
 import { DownloadReports } from '@/components/admin/download-reports';
+import { RenewalNotifyButton } from '@/components/admin/renewal-notify-button';
 
 export default async function AdminSalesPage() {
     const { data: sales, error } = await getSalesData();
@@ -219,13 +220,11 @@ export default async function AdminSalesPage() {
                                         </span>
                                     </TableCell>
                                     <TableCell className="text-right">
-                                        <a
-                                            href={`mailto:${user.email}?subject=Action Required: Renew Your ${user.plan === 'premium' ? 'Premium' : 'Pro'} Subscription&body=Dear ${user.fullName},%0D%0A%0D%0AWe hope you are enjoying your experience with Traders Diary.%0D%0A%0D%0AThis is a friendly reminder that your ${user.plan} subscription is marked as ${user.status === 'missed' ? 'EXPIRED' : 'ENDING SOON'} on ${new Date(user.endDate).toLocaleDateString()}.%0D%0A%0D%0ATo maintain uninterrupted access to your specific trading journal, advanced analytics, and market patterns, please renew your subscription at your earliest convenience.%0D%0A%0D%0AYou can renew directly via your dashboard:%0D%0Ahttps://tradediary.equitymarvels.com/dashboard/subscription%0D%0A%0D%0AIf you have any questions, please simply reply to this email.%0D%0A%0D%0ABest regards,%0D%0A%0D%0ATraders Diary Team%0D%0APratham Wealth Academy`}
-                                            className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition-colors"
-                                        >
-                                            <Mail className="w-3 h-3" />
-                                            Notify
-                                        </a>
+                                        <RenewalNotifyButton
+                                            userId={user.id}
+                                            email={user.email}
+                                            status={user.status}
+                                        />
                                     </TableCell>
                                 </TableRow>
                             ))}
