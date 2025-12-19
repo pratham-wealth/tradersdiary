@@ -1,5 +1,3 @@
-import nodemailer from 'nodemailer';
-
 const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: Number(process.env.SMTP_PORT),
@@ -11,6 +9,11 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendRenewalEmail(to: string, name: string, plan: string, expiryDate: string, status: 'due_today' | 'due_week' | 'missed') {
+    if (!process.env.SMTP_HOST) {
+        console.error("SMTP_HOST is missing. Restart server to load .env.local changes.");
+        return { success: false, error: "Server Configuration Missing. Please restart the server." };
+    }
+
     const isMissed = status === 'missed';
     const deadlineColor = isMissed ? '#ef4444' : '#d4af37';
     const statusText = isMissed ? 'EXPIRED' : 'ENDING SOON';
