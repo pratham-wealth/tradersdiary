@@ -29,8 +29,11 @@ export function RenewalNotifyButton({ userId, email, status }: RenewalNotifyButt
                     description: typeof result.error === 'string' ? result.error : 'Unknown error'
                 });
             }
-        } catch (error) {
-            toast.error("Something went wrong");
+        } catch (error: any) {
+            console.error("Renewal Email Error:", error);
+            toast.error("Something went wrong", {
+                description: error?.message || "Check console for details"
+            });
         } finally {
             setLoading(false);
         }

@@ -1,24 +1,25 @@
-const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false, // true for 465, false for other ports
-    auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-    },
-});
-
 export async function sendRenewalEmail(to: string, name: string, plan: string, expiryDate: string, status: 'due_today' | 'due_week' | 'missed') {
     if (!process.env.SMTP_HOST) {
         console.error("SMTP_HOST is missing. Restart server to load .env.local changes.");
         return { success: false, error: "Server Configuration Missing. Please restart the server." };
     }
 
-    const isMissed = status === 'missed';
-    const deadlineColor = isMissed ? '#ef4444' : '#d4af37';
-    const statusText = isMissed ? 'EXPIRED' : 'ENDING SOON';
+    try {
+        const transporter = nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT),
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: process.env.SMTP_USER,
+                pass: process.env.SMTP_PASS,
+            },
+        });
 
-    const html = `
+        const isMissed = status === 'missed';
+        const deadlineColor = isMissed ? '#ef4444' : '#d4af37';
+        const statusText = isMissed ? 'EXPIRED' : 'ENDING SOON';
+
+        const html = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,17 +89,17 @@ export async function sendRenewalEmail(to: string, name: string, plan: string, e
 </html>
     `;
 
-    try {
-        const info = await transporter.sendMail({
-            from: '"Traders Diary" <wealthacademy@equitymarvels.com>',
-            to,
-            subject: `Action Required: Renew Your ${plan} Subscription`,
-            html,
-        });
-        console.log("Message sent: %s", info.messageId);
-        return { success: true };
-    } catch (error) {
-        console.error("Error sending email:", error);
-        return { success: false, error: error };
+        try {
+            const info = await transporter.sendMail({
+                from: '"Traders Diary" <wealthacademy@equitymarvels.com>',
+                to,
+                subject: `Action Required: Renew Your ${plan} Subscription`,
+                html,
+            });
+            console.log("Message sent: %s", info.messageId);
+            return { success: true };
+        } catch (error) {
+            console.error("Error sending email:", error);
+            return { success: false, error: error };
+        }
     }
-}
