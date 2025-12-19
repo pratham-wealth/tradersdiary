@@ -248,6 +248,15 @@ export function TradeCard({ trade }: TradeCardProps) {
                         {trade.outcome}
                     </span>
                     { /* Smart Share Button */}
+                    {!isOpen && (
+                        <button
+                            onClick={handleShare}
+                            className="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all"
+                            title="Share Trade Result"
+                        >
+                            <Share2 className="w-4 h-4" />
+                        </button>
+                    )}
 
                 </div>
 
