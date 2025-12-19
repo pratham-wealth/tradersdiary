@@ -40,7 +40,7 @@ export default async function AdminUsersPage({
                 </div>
 
                 {stats && (
-                    <div className="flex items-stretch gap-3">
+                    <div className="flex flex-wrap items-stretch justify-end gap-3 max-w-4xl">
                         {/* Total Population */}
                         <div className="bg-slate-900/50 backdrop-blur-xl px-4 py-3 rounded-xl border border-slate-700/50 flex flex-col items-center min-w-[90px] shadow-lg">
                             <span className="text-slate-500 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
@@ -55,6 +55,22 @@ export default async function AdminUsersPage({
                                 <Activity className="w-3 h-3" /> 24h Active
                             </span>
                             <span className="text-2xl font-bold text-emerald-400 tabular-nums tracking-tight">{stats.activeToday}</span>
+                        </div>
+
+                        {/* Pro Users */}
+                        <div className="bg-slate-900/50 backdrop-blur-xl px-4 py-3 rounded-xl border border-amber-500/20 flex flex-col items-center min-w-[90px] shadow-lg">
+                            <span className="text-amber-500/80 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                Pro
+                            </span>
+                            <span className="text-2xl font-bold text-amber-400 tabular-nums tracking-tight">{stats.proUsers}</span>
+                        </div>
+
+                        {/* Premium Users */}
+                        <div className="bg-slate-900/50 backdrop-blur-xl px-4 py-3 rounded-xl border border-purple-500/20 flex flex-col items-center min-w-[90px] shadow-lg">
+                            <span className="text-purple-500/80 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                                Premium
+                            </span>
+                            <span className="text-2xl font-bold text-purple-400 tabular-nums tracking-tight">{stats.premiumUsers}</span>
                         </div>
 
                         {/* Diary Usage */}
@@ -74,6 +90,14 @@ export default async function AdminUsersPage({
                         </div>
                     </div>
                 )}
+            </div>
+
+            {/* Quick Actions / Navigation */}
+            <div className="flex gap-4">
+                <a href="/dashboard/admin/sales" className="px-4 py-2 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm font-bold flex items-center gap-2 hover:bg-emerald-500/20 transition-colors">
+                    <Activity className="w-4 h-4" />
+                    View Sales Reports
+                </a>
             </div>
 
             <UsersTable

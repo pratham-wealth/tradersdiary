@@ -10,6 +10,8 @@ export type AdminStats = {
     activeToday: number; // Logged in last 24h
     ghostAccounts: number; // Created > 30 days ago, never logged in (or > 30 days inactive)
     diaryUsage: number; // Users who have logged at least 1 trade
+    proUsers: number;
+    premiumUsers: number;
 };
 
 // -- Analytics Action --
@@ -65,12 +67,25 @@ export async function getAdminStats(): Promise<{ stats: AdminStats | null; error
         // Actually, let's just count total trades for now as a proxy for activity.
         // Better: active_users count.
 
+        // Plan Counts
+        const { count: proCount } = await supabase
+            .from('user_settings')
+            .select('*', { count: 'exact', head: true })
+            .eq('plan_type', 'pro');
+
+        const { count: premiumCount } = await supabase
+            .from('user_settings')
+            .select('*', { count: 'exact', head: true })
+            .eq('plan_type', 'premium');
+
         return {
             stats: {
                 totalUsers: users.length,
                 activeToday,
                 ghostAccounts,
-                diaryUsage: diaryUsers || 0 // This returns total trades, not unique users, but it's a "Usage" metric.
+                diaryUsage: diaryUsers || 0, // This returns total trades, not unique users, but it's a "Usage" metric.
+                proUsers: proCount || 0,
+                premiumUsers: premiumCount || 0
             }
         };
 
