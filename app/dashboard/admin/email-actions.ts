@@ -1,7 +1,7 @@
 'use server';
 
 import { createAdminClient } from '@/lib/supabase/server';
-import { sendRenewalEmail } from '@/lib/email-service';
+import { sendRenewalEmail } from '@/lib/mailer';
 
 export async function sendRenewalNotification(userId: string) {
     const supabase = await createAdminClient();
