@@ -19,7 +19,7 @@ import {
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreHorizontal, Shieldalert, ShieldCheck, Ban, CheckCircle } from 'lucide-react';
+import { MoreHorizontal, ShieldAlert, Ban } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -99,7 +99,6 @@ export function UsersTable({
             {upgradeUser && (
                 <AdminUpgradeModal
                     user={upgradeUser}
-                    onClose={() => setUpgradeUser(null)}
                     onClose={() => setUpgradeUser(null)}
                 />
             )}
@@ -220,38 +219,35 @@ export function UsersTable({
                     ))}
                 </TableBody>
             </Table>
-        </Table>
 
-            {/* Pagination Footer */ }
-    {
-        totalPages > 1 && (
-            <div className="p-4 border-t border-slate-700 flex items-center justify-between">
-                <span className="text-sm text-slate-400">
-                    Page {currentPage} of {totalPages}
-                </span>
-                <div className="flex gap-2">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage <= 1}
-                        className="bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage >= totalPages}
-                        className="bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
-                    >
-                        Next
-                    </Button>
+            {/* Pagination Footer */}
+            {totalPages > 1 && (
+                <div className="p-4 border-t border-slate-700 flex items-center justify-between">
+                    <span className="text-sm text-slate-400">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <div className="flex gap-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage <= 1}
+                            className="bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                        >
+                            Previous
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage >= totalPages}
+                            className="bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                        >
+                            Next
+                        </Button>
+                    </div>
                 </div>
-            </div>
-        )
-    }
-        </div >
+            )}
+        </div>
     );
 }
