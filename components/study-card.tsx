@@ -115,10 +115,7 @@ export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
         }
     }
 
-    function handleShare(e: React.MouseEvent) {
-        e.stopPropagation();
-        setShowShareModal(true);
-    }
+
 
     const typeInfo = studyTypeLabels[study.study_type] || studyTypeLabels.OTHER;
     const isCompleted = study.status === 'COMPLETED';
@@ -162,13 +159,7 @@ export function StudyCard({ study, onAddToWatch }: StudyCardProps) {
                     </div>
 
                     <div className="flex gap-2">
-                        <button
-                            onClick={handleShare}
-                            className="text-gray-400 hover:text-blue-500 transition-colors z-20 relative"
-                            title="Share Study"
-                        >
-                            <Share2 className="w-4 h-4" />
-                        </button>
+
                         <button
                             onClick={handleDelete}
                             className="text-gray-400 hover:text-red-500 transition-colors z-20 relative"

@@ -43,10 +43,7 @@ export function WatchCard({ item }: WatchCardProps) {
         await deleteWatchItem(item.id);
     }
 
-    function handleShare(e: React.MouseEvent) {
-        e.stopPropagation();
-        setShowShareModal(true);
-    }
+
 
 
     const isLong = item.direction === 'LONG';
@@ -77,13 +74,7 @@ export function WatchCard({ item }: WatchCardProps) {
                     </span>
                 </div>
                 <div className="flex gap-2">
-                    <button
-                        onClick={handleShare}
-                        className="text-gray-400 hover:text-blue-500 transition-colors"
-                        title="Share Setup"
-                    >
-                        <Share2 className="w-4 h-4" />
-                    </button>
+
                     <button
                         onClick={handleClose}
                         disabled={loading}
