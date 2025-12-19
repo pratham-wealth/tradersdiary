@@ -98,138 +98,19 @@ export function SocialShareModal({ isOpen, onClose, children, title = "Trade Set
     };
 
     // --- RENDER CONTENT HELPERS ---
-    // We isolate the content rendering so we can use it in both visible and hidden views
-    const renderContent = (isForCapture = false) => {
+    const renderCard = () => {
         if (variant === 'watchlist' && data) {
             return (
-                <div className={`flex flex-col gap-4 ${isForCapture ? 'p-10' : ''}`}>
-                    {/* Increased padding for capture */}
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <span className="text-xs text-indigo-400 font-bold tracking-widest uppercase mb-1 block">Trade Idea</span>
-                            <h3 className={`${isForCapture ? 'text-4xl' : 'text-3xl'} font-black text-white tracking-tight`}>
-                                {data.instrument}
-                            </h3>
-                        </div>
-                        <div className={`px-3 py-1.5 rounded-lg flex items-center gap-1.5 ${data.direction === 'LONG' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
-                            <span className="text-sm font-bold uppercase">{data.direction}</span>
-                        </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-3 my-2">
-                        {/* Levels - Styled same as before but maybe larger font for capture */}
-                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5 text-center">
-                            <span className="text-[10px] text-slate-500 uppercase tracking-widest block mb-1">Entry</span>
-                            <span className="text-lg font-bold text-white">{data.entry_level ? data.entry_level : 'Market'}</span>
-                        </div>
-                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5 text-center">
-                            <span className="text-[10px] text-slate-500 uppercase tracking-widest block mb-1">Stop</span>
-                            <span className="text-lg font-bold text-red-400">{data.stop_loss || '-'}</span>
-                        </div>
-                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5 text-center">
-                            <span className="text-[10px] text-slate-500 uppercase tracking-widest block mb-1">Target</span>
-                            <span className="text-lg font-bold text-green-400">{data.target_price || '-'}</span>
-                        </div>
-                    </div>
-
-                    {data.notes && (
-                        <div className="bg-slate-800/30 p-4 rounded-xl border border-white/5 relative">
-                            <span className="absolute -top-2 left-4 px-2 bg-slate-900 text-[10px] text-slate-400 uppercase tracking-widest">Logic</span>
-                            <p className="text-sm text-slate-300 italic leading-relaxed">"{data.notes}"</p>
-                        </div>
-                    )}
-
-                    {/* Footer for Capture Only */}
-                    {isForCapture && (
-                        <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">TD</div>
-                                <div>
-                                    <div className="font-bold text-white text-sm">Traders Diary</div>
-                                    <div className="text-xs text-slate-400">tradediary.equitymarvels.com</div>
-                                </div>
-                            </div>
-                            <div className="text-xs text-slate-500">{new Date().toLocaleDateString()}</div>
-                        </div>
-                    )}
-                </div>
+                <WatchCardView item={{
+                    ...data,
+                    direction: data.direction as 'LONG' | 'SHORT'
+                }} />
             );
         }
 
         if (variant === 'study' && data) {
             return (
-                <div className={`flex flex-col h-full ${isForCapture ? 'p-10 gap-8' : 'gap-6'}`}>
-                    {/* Header Section */}
-                    <div className="flex items-center justify-between shrink-0">
-                        <div>
-                            <span className="text-xs text-indigo-400 font-bold tracking-widest uppercase mb-1 block">Market Analysis</span>
-                            <h3 className={`${isForCapture ? 'text-4xl' : 'text-2xl'} font-black text-white tracking-tight leading-tight`}>
-                                {data.title}
-                            </h3>
-                        </div>
-                        {/* Header Badge */}
-                        <div className={`px-4 py-2 rounded-lg flex items-center gap-2 ${data.direction === 'LONG' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : data.direction === 'SHORT' ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-slate-700/50 text-slate-400 border border-white/5'}`}>
-                            <span className={`${isForCapture ? 'text-2xl' : 'text-sm'} font-bold uppercase`}>{data.direction || 'NEUTRAL'}</span>
-                        </div>
-                    </div>
-
-                    {/* Vertical Layout: Image First, then Data/Content */}
-
-                    {/* Image Section (Main Focus) */}
-                    {data.images && data.images.length > 0 && (
-                        <div className={`w-full rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-black/50 flex items-center justify-center ${isForCapture ? 'min-h-[400px] max-h-[600px] flex-1' : 'aspect-video'}`}>
-                            <img
-                                src={data.images[0]}
-                                alt="Chart"
-                                className="w-full h-full object-contain"
-                                crossOrigin="anonymous"
-                            />
-                        </div>
-                    )}
-
-                    {/* Data Bar (Under Image) */}
-                    <div className="flex flex-wrap gap-4 shrink-0">
-                        {data.price && (
-                            <div className="px-4 py-2 rounded-lg bg-slate-800/50 border border-white/5 flex items-center gap-3">
-                                <span className="text-xs text-slate-500 uppercase font-bold tracking-wider">CMP</span>
-                                <span className={`${isForCapture ? 'text-2xl' : 'text-lg'} font-bold text-white tabular-nums`}>₹{data.price.toFixed(2)}</span>
-                            </div>
-                        )}
-                        {data.probability && (
-                            <div className={`px-4 py-2 rounded-lg border border-white/5 flex items-center gap-3 ${data.probability === 'HIGH' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-slate-800/50 text-slate-400'}`}>
-                                <span className="text-xs opacity-70 uppercase font-bold tracking-wider">Prob</span>
-                                <span className={`${isForCapture ? 'text-2xl' : 'text-lg'} font-bold uppercase`}>{data.probability.replace('_', ' ')}</span>
-                            </div>
-                        )}
-                    </div>
-
-                    {/* Content Text (Footer of the logic) */}
-                    <div className="bg-slate-800/30 p-6 rounded-xl border border-white/5 relative shrink-0">
-                        <span className="absolute -top-3 left-6 px-2 bg-slate-900 text-[10px] text-slate-400 uppercase tracking-widest border border-white/5 rounded">Logic</span>
-                        <p className={`text-slate-300 font-medium whitespace-pre-wrap ${isForCapture
-                            ? 'text-lg leading-relaxed'
-                            : 'text-sm leading-relaxed max-h-[150px] overflow-y-auto'
-                            }`}>
-                            {data.content}
-                        </p>
-                    </div>
-
-                    {/* Footer specific for Capture */}
-                    {isForCapture && (
-                        <div className="mt-auto pt-6 flex items-center justify-between border-t border-white/5 shrink-0">
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-indigo-500/20">TD</div>
-                                <div>
-                                    <div className="text-lg font-bold text-white">Traders Diary</div>
-                                    <div className="text-sm text-slate-400">tradediary.equitymarvels.com</div>
-                                </div>
-                            </div>
-                            <div className="text-sm text-slate-500 opacity-75 font-mono">
-                                {new Date(data.created_at).toLocaleDateString()}
-                            </div>
-                        </div>
-                    )}
-                </div>
+                <StudyCardView data={data} />
             );
         }
 
@@ -239,67 +120,56 @@ export function SocialShareModal({ isOpen, onClose, children, title = "Trade Set
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-            <div className={`bg-slate-900 border border-white/10 rounded-2xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh] ${variant === 'study' ? 'max-w-5xl' : 'max-w-md'}`}>
+            {/* Modal Container - Responsive width */}
+            <div className={`bg-slate-900 border border-white/10 rounded-2xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh] ${variant === 'study' ? 'max-w-4xl' : 'max-w-lg'}`}>
 
                 {/* Modal Header */}
-                <div className="p-4 border-b border-white/5 flex items-center justify-between shrink-0">
-                    <h2 className="text-lg font-bold text-white">Share Preview</h2>
+                <div className="p-4 border-b border-white/5 flex items-center justify-between shrink-0 bg-slate-900 z-10">
+                    <h2 className="text-xl font-bold text-white">
+                        {title}
+                    </h2>
                     <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
                         <X className="w-6 h-6" />
                     </button>
                 </div>
 
-                {/* VISIBLE SCROLLABLE CONTENT */}
-                <div className="p-6 overflow-y-auto flex-1 flex flex-col items-center bg-slate-950/50">
+                {/* VISIBLE PREVIEW AREA */}
+                <div className="p-6 overflow-y-auto flex-1 flex flex-col items-center bg-slate-950/80">
                     <div
-                        className="w-full bg-slate-900 rounded-xl overflow-hidden border border-white/5 relative shadow-xl"
-                        style={{ background: 'linear-gradient(145deg, #1e293b 0%, #0f172a 100%)' }}
-                    >
-                        <div className="p-6">
-                            {renderContent(false)}
-                        </div>
-                        {/* Visible Footer (only for screen) */}
-                        <div className="bg-slate-950/80 p-4 border-t border-white/5 flex items-center justify-between">
-                            <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-black text-sm shadow-lg shadow-indigo-500/20">TD</div>
-                                <div className="flex flex-col justify-center">
-                                    <span className="text-sm font-bold text-white tracking-wide leading-tight">Traders Diary</span>
-                                    <span className="text-[10px] text-slate-400 font-medium tracking-wide">https://tradediary.equitymarvels.com</span>
-                                </div>
-                            </div>
-                            <div className="text-[10px] text-slate-500 font-mono">{new Date().toLocaleDateString()}</div>
-                        </div>
-                    </div>
-                    <p className="text-center text-xs text-slate-500 mt-4">This is how your share will look.</p>
-                </div>
-
-                {/* HIDDEN CAPTURE CONTAINER (Dynamic Height, Fixed Width for consistency) */}
-                <div style={{ position: 'fixed', top: '-9999px', left: '-9999px' }}>
-                    <div
-                        ref={hiddenCardRef} // Target for html2canvas
+                        className="relative shadow-2xl rounded-2xl overflow-hidden shrink-0"
                         style={{
-                            width: '800px', // Standard width for mobile/vertical sharing
-                            // height: 'auto', // Let height be natural
-                            minHeight: '600px',
-                            background: '#020617', // Slate-950
-                            padding: '40px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            fontFamily: 'sans-serif'
+                            width: '100%',
+                            aspectRatio: '800/1000',
+                            maxWidth: variant === 'study' ? '450px' : '380px', // Scaling down for preview
                         }}
                     >
+                        {/* We use a container that matches the aspect ratio but scales content to fit */}
+                        <div style={{
+                            width: '800px',
+                            height: '1000px',
+                            transform: `scale(${variant === 'study' ? 450 / 800 : 380 / 800})`,
+                            transformOrigin: 'top left',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0
+                        }}>
+                            {renderCard()}
+                        </div>
+                    </div>
+                    <p className="text-center text-xs text-slate-500 mt-6 font-medium">This is exactly how your shared image will look.</p>
+                </div>
 
-                        {/* We use the shared visual component for identity between download and link preview */}
-                        {variant === 'watchlist' && data ? (
-                            <WatchCardView item={{
-                                ...data,
-                                direction: data.direction as 'LONG' | 'SHORT'
-                            }} />
-                        ) : variant === 'study' && data ? (
-                            <StudyCardView data={data} />
-                        ) : (
-                            renderContent(true)
-                        )}
+                {/* HIDDEN CAPTURE CONTAINER (800x1000 Locked) */}
+                <div style={{ position: 'fixed', top: '-9999px', left: '-9999px', opacity: 0 }}>
+                    <div
+                        ref={hiddenCardRef}
+                        style={{
+                            width: '800px',
+                            height: '1000px',
+                            overflow: 'hidden'
+                        }}
+                    >
+                        {renderCard()}
                     </div>
                 </div>
 
