@@ -53,30 +53,19 @@ export async function getAdminStats(): Promise<{ stats: AdminStats | null; error
             }
         });
 
-        // Diary Usage (Distinct Users who have trades)
-        // We can do a count on the trades table.
-        // Assuming we want "Users who have EVER used it"
-        const { count: diaryUsers, error: tradeError } = await supabase
-            .from('trades') // Check if 'trades' exists, usually it does for journal
-            .select('user_id', { count: 'exact', head: true });
-
-        // Note: 'head: true' with select distinct is tricky in Supabase basic API without RPC.
-        // Alternative: Approximate usage or checking a different metric.
-        // For accurate distinct count without fetching all, we might need a raw query or RPC.
-        // Let's stick to a simpler proxy: "Trades Count" for now, or just return 0 if complexity is high.
-        // Actually, let's just count total trades for now as a proxy for activity.
-        // Better: active_users count.
-
-        // Plan Counts
-        const { count: proCount } = await supabase
-            .from('user_settings')
-            .select('*', { count: 'exact', head: true })
-            .eq('plan_type', 'pro');
-
-        const { count: premiumCount } = await supabase
-            .from('user_settings')
-            .select('*', { count: 'exact', head: true })
-            .eq('plan_type', 'premium');
+        // Run independent queries in parallel
+        const [
+            { count: diaryUsers },
+            { count: proCount },
+            { count: premiumCount }
+        ] = await Promise.all([
+            // Diary Usage (Total Trades for now)
+            supabase.from('trades').select('user_id', { count: 'exact', head: true }),
+            // Pro Count
+            supabase.from('user_settings').select('*', { count: 'exact', head: true }).eq('plan_type', 'pro'),
+            // Premium Count
+            supabase.from('user_settings').select('*', { count: 'exact', head: true }).eq('plan_type', 'premium')
+        ]);
 
         return {
             stats: {
@@ -127,11 +116,12 @@ export async function getAdminUsers({
 
         if (authError) throw authError;
 
-        // 2. Fetch User Settings
-        // We get ALL settings to map them. For huge datasets we'd filter by IDs.
+        // 2. Fetch User Settings (Optimized: Only for fetched users)
+        const userIds = authUsers.map(u => u.id);
         const { data: settings, error: settingsError } = await supabase
             .from('user_settings')
-            .select('*');
+            .select('*')
+            .in('id', userIds.length > 0 ? userIds : ['00000000-0000-0000-0000-000000000000']);
 
         if (settingsError) throw settingsError;
 

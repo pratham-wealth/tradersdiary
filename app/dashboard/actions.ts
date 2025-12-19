@@ -127,27 +127,29 @@ export async function getDashboardStats() {
         return { openTrades: 0, watchingCount: 0 };
     }
 
-    // Get open trades count
-    const { count: openTrades } = await supabase
-        .from('trades')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .eq('outcome', 'OPEN');
-
-    // Get watching items count
-    const { count: watchingCount } = await supabase
-        .from('watch_list')
-        .select('*', { count: 'exact', head: true })
-        .eq('user_id', user.id)
-        .eq('status', 'WATCHING');
-
-    // Get recent trades
-    const { data: recentTrades } = await supabase
-        .from('trades')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('entry_date', { ascending: false })
-        .limit(5);
+    // Parallelize independent queries
+    const [
+        { count: openTrades },
+        { count: watchingCount },
+        { data: recentTrades }
+    ] = await Promise.all([
+        supabase
+            .from('trades')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+            .eq('outcome', 'OPEN'),
+        supabase
+            .from('watch_list')
+            .select('*', { count: 'exact', head: true })
+            .eq('user_id', user.id)
+            .eq('status', 'WATCHING'),
+        supabase
+            .from('trades')
+            .select('*')
+            .eq('user_id', user.id)
+            .order('entry_date', { ascending: false })
+            .limit(5)
+    ]);
 
     return {
         openTrades: openTrades || 0,
