@@ -479,6 +479,54 @@ export function TradeCard({ trade }: TradeCardProps) {
                 </div>
             )}
 
+            {/* Share Modal */}
+            <SocialShareModal
+                isOpen={showShareModal}
+                onClose={() => setShowShareModal(false)}
+                instrument={trade.instrument}
+                title={`Trade Result: ${trade.instrument}`}
+                shareText={`Just closed a trade on $${trade.instrument}! ${trade.pnl_points && trade.pnl_points > 0 ? '🚀' : '📉'} P&L: ${trade.pnl_points && trade.pnl_points > 0 ? '+' : ''}${trade.pnl_points} points. ${trade.outcome === 'WIN' ? 'Target Hit! 🎯' : 'Stop Hit.'}\n\nTrack your trades with Traders Diary: https://tradediary.equitymarvels.com`}
+            >
+                {/* Simplified Visual Card for Sharing */}
+                <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between">
+                        <h3 className="text-2xl font-bold text-white tracking-tight">
+                            {trade.instrument}
+                        </h3>
+                        <span className={`px-3 py-1 text-sm font-bold rounded-lg ${isWin ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                            {trade.outcome}
+                        </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 my-2">
+                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                            <span className="text-xs text-slate-400 uppercase tracking-widest block mb-1">Direction</span>
+                            <span className={`text-sm font-bold flex items-center gap-2 ${isLong ? 'text-blue-400' : 'text-orange-400'}`}>
+                                {isLong ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
+                                {trade.direction}
+                            </span>
+                        </div>
+                        <div className="bg-slate-800/50 p-3 rounded-lg border border-white/5">
+                            <span className="text-xs text-slate-400 uppercase tracking-widest block mb-1">P&L Points</span>
+                            <span className={`text-xl font-bold ${trade.pnl_points && trade.pnl_points > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                                {trade.pnl_points && trade.pnl_points > 0 ? '+' : ''}{trade.pnl_points}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between text-sm text-slate-400 pt-2 border-t border-white/5">
+                        <div className="flex flex-col">
+                            <span className="text-[10px] uppercase tracking-wider">Triggered</span>
+                            <span className="font-mono text-white">{new Date(trade.entry_date).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex flex-col text-right">
+                            <span className="text-[10px] uppercase tracking-wider">Closed</span>
+                            <span className="font-mono text-white">{trade.exit_date ? new Date(trade.exit_date).toLocaleDateString() : 'N/A'}</span>
+                        </div>
+                    </div>
+                </div>
+            </SocialShareModal>
+
 
         </div>
     );
