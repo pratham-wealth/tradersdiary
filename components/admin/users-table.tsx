@@ -26,11 +26,45 @@ import { cn } from '@/lib/utils';
 
 import { AdminUpgradeModal } from './admin-upgrade-modal';
 
-export function UsersTable({ initialUsers }: { initialUsers: AdminUser[] }) {
+export function UsersTable({
+    initialUsers,
+    totalUsers,
+    currentPage,
+    perPage,
+    currentQuery
+}: {
+    initialUsers: AdminUser[];
+    totalUsers: number;
+    currentPage: number;
+    perPage: number;
+    currentQuery: string;
+}) {
     const [users] = useState<AdminUser[]>(initialUsers);
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<string | null>(null);
     const [upgradeUser, setUpgradeUser] = useState<AdminUser | null>(null);
+
+    // Search handler
+    const handleSearch = (term: string) => {
+        const params = new URLSearchParams(window.location.search);
+        if (term) {
+            params.set('query', term);
+        } else {
+            params.delete('query');
+        }
+        params.set('page', '1'); // Reset to page 1 on search
+        router.push(`?${params.toString()}`);
+    };
+
+    // Pagination handler
+    const handlePageChange = (newPage: number) => {
+        const params = new URLSearchParams(window.location.search);
+        params.set('page', newPage.toString());
+        router.push(`?${params.toString()}`);
+    };
+
+    const totalPages = Math.ceil(totalUsers / perPage);
+
 
     const handleBanToggle = async (userId: string, currentStatus: string) => {
         setIsLoading(userId);
@@ -66,8 +100,33 @@ export function UsersTable({ initialUsers }: { initialUsers: AdminUser[] }) {
                 <AdminUpgradeModal
                     user={upgradeUser}
                     onClose={() => setUpgradeUser(null)}
+                    onClose={() => setUpgradeUser(null)}
                 />
             )}
+
+            {/* Toolbar: Search */}
+            <div className="p-4 border-b border-slate-700 flex justify-between items-center">
+                <div className="relative max-w-sm w-full">
+                    <input
+                        type="text"
+                        placeholder="Search users by name, email, or phone..."
+                        className="w-full bg-slate-900 border border-slate-700 rounded-lg py-2 pl-3 pr-4 text-sm text-white focus:ring-1 focus:ring-slate-500 focus:border-slate-500"
+                        defaultValue={currentQuery}
+                        onChange={(e) => {
+                            // Simple debounce
+                            // @ts-ignore
+                            clearTimeout(window.bookingSearchTimeout);
+                            // @ts-ignore
+                            window.bookingSearchTimeout = setTimeout(() => {
+                                handleSearch(e.target.value);
+                            }, 500);
+                        }}
+                    />
+                </div>
+                <div className="text-xs text-slate-500 uppercase font-bold tracking-wider">
+                    Total: {totalUsers}
+                </div>
+            </div>
 
             <Table>
                 <TableHeader className="bg-slate-900/50">
@@ -161,6 +220,38 @@ export function UsersTable({ initialUsers }: { initialUsers: AdminUser[] }) {
                     ))}
                 </TableBody>
             </Table>
-        </div>
+        </Table>
+
+            {/* Pagination Footer */ }
+    {
+        totalPages > 1 && (
+            <div className="p-4 border-t border-slate-700 flex items-center justify-between">
+                <span className="text-sm text-slate-400">
+                    Page {currentPage} of {totalPages}
+                </span>
+                <div className="flex gap-2">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage <= 1}
+                        className="bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                    >
+                        Previous
+                    </Button>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage >= totalPages}
+                        className="bg-slate-800 border-slate-700 text-slate-300 hover:bg-slate-700"
+                    >
+                        Next
+                    </Button>
+                </div>
+            </div>
+        )
+    }
+        </div >
     );
 }
