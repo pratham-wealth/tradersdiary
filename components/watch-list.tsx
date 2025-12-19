@@ -160,13 +160,7 @@ export function WatchList({ items, onDelete, onEdit }: WatchListProps) {
                                         </div>
                                     )}
 
-                                    <button
-                                        onClick={() => setShareItem(item)}
-                                        className="bg-slate-800 hover:bg-blue-600 border border-white/5 text-white px-3 py-2 rounded-lg shadow-sm hover:shadow-md hover:shadow-blue-500/20 active:scale-95 transition-all duration-200"
-                                        title="Share Setup"
-                                    >
-                                        <Share2 className="w-3.5 h-3.5" />
-                                    </button>
+
 
                                     <Link
                                         href={`/dashboard/journal?watchItemId=${item.id}`}
@@ -190,18 +184,7 @@ export function WatchList({ items, onDelete, onEdit }: WatchListProps) {
                 );
             })}
             {/* Share Modal */}
-            {shareItem && (
-                <SocialShareModal
-                    isOpen={!!shareItem}
-                    onClose={() => setShareItem(null)}
-                    title={`Trade Idea: ${shareItem.instrument}`}
-                    instrument={shareItem.instrument}
-                    variant="watchlist"
-                    data={shareItem}
-                    shareUrl={getShareUrl(shareItem)}
-                    shareText={`👀 Watching $${shareItem.instrument} for a potential ${shareItem.direction} setup!\n\n${shareItem.notes ? `"${shareItem.notes}"\n\n` : ''}Track this setup on Traders Diary`}
-                />
-            )}
+
         </div>
     );
 }
