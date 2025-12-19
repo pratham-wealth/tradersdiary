@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Mail, Check, Loader2, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
-import { sendRenewalNotification } from '@/app/dashboard/admin/actions';
+import { sendRenewalNotification } from '@/app/dashboard/admin/email-actions';
 import { cn } from '@/lib/utils';
 
 interface RenewalNotifyButtonProps {
