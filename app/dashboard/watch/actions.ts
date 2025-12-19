@@ -35,13 +35,12 @@ export async function addWatchItem(formData: FormData) {
         return { error: 'Not authenticated' };
     }
 
-    // Check if user can add more items (plan limit)
-    const { data: canAdd } = await supabase.rpc('can_add_watch_item', {
-        p_user_id: user.id,
-    });
+    // Check Usage Limit (Subscription Guard)
+    const { checkUsageLimit } = await import('@/lib/subscription-guard');
+    const limitCheck = await checkUsageLimit(user.id, 'watch');
 
-    if (!canAdd) {
-        return { error: 'Watch list limit reached. Upgrade to Pro for unlimited items!' };
+    if (!limitCheck.allowed) {
+        return { error: `Free Plan Limit Reached (${limitCheck.currentCount}/10). Upgrade to Pro for unlimited watchlist items!` };
     }
 
     const instrument = formData.get('instrument') as string;

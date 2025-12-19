@@ -21,10 +21,10 @@ export async function getAdminUsers(): Promise<{ users: AdminUser[]; error?: str
     try {
         const supabase = await createAdminClient();
 
-        // 1. Fetch Auth Users (with pagination support potentially, but retrieving 100 for now)
+        // 1. Fetch Auth Users (with pagination support potentially, but retrieving 1000 for now)
         const { data: { users: authUsers }, error: authError } = await supabase.auth.admin.listUsers({
             page: 1,
-            perPage: 100
+            perPage: 1000
         });
 
         if (authError) throw authError;

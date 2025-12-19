@@ -43,13 +43,12 @@ export async function addTrade(formData: FormData) {
         return { error: 'Not authenticated' };
     }
 
-    // Check if user can add more trades (plan limit)
-    const { data: canAdd } = await supabase.rpc('can_add_trade', {
-        p_user_id: user.id,
-    });
+    // Check Usage Limit (Subscription Guard)
+    const { checkUsageLimit } = await import('@/lib/subscription-guard');
+    const limitCheck = await checkUsageLimit(user.id, 'trade');
 
-    if (!canAdd) {
-        return { error: 'Monthly trade limit reached. Upgrade to Pro for unlimited trades!' };
+    if (!limitCheck.allowed) {
+        return { error: `Free Plan Limit Reached (${limitCheck.currentCount}/10). Upgrade to Pro for unlimited trades!` };
     }
 
     const instrument = formData.get('instrument') as string;
