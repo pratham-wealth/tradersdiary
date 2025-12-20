@@ -30,44 +30,65 @@ export function LandingProblem() {
 
                 {/* Problem Cards */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-                    {[
-                        {
-                            title: "Scattered Analysis",
-                            desc: "Analysis gets scattered across notebooks and screenshots",
-                            color: "red"
-                        },
-                        {
-                            title: "Undocumented Strategies",
-                            desc: "Strategies remain in the head, not documented",
-                            color: "orange"
-                        },
-                        {
-                            title: "Forgotten Setups",
-                            desc: "Good setups are forgotten",
-                            color: "yellow"
-                        },
-                        {
-                            title: "Repeated Mistakes",
-                            desc: "Mistakes repeat without awareness",
-                            color: "red"
-                        },
-                        {
-                            title: "Emotional Trading",
-                            desc: "Trades happen emotionally, not systematically",
-                            color: "orange"
-                        }
-                    ].map((problem, i) => (
-                        <div key={i} className="relative group">
-                            <div className={`absolute -inset-1 bg-gradient-to-r from-${problem.color}-500/20 to-${problem.color}-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                            <div className={`relative bg-midnight-950/80 border border-${problem.color}-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-${problem.color}-500/40 transition-all`}>
-                                <div className={`w-10 h-10 rounded-xl bg-${problem.color}-500/10 flex items-center justify-center mb-4 border border-${problem.color}-500/20`}>
-                                    <X className={`w-5 h-5 text-${problem.color}-400`} />
-                                </div>
-                                <h3 className="text-lg font-bold text-white mb-2">{problem.title}</h3>
-                                <p className="text-slate-400 text-sm leading-relaxed">{problem.desc}</p>
+                    {/* Card 1: Scattered Analysis */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-red-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="relative bg-midnight-950/80 border border-red-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-red-500/40 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 border border-red-500/20">
+                                <X className="w-5 h-5 text-red-400" />
                             </div>
+                            <h3 className="text-lg font-bold text-white mb-2">Scattered Analysis</h3>
+                            <p className="text-slate-400 text-sm leading-relaxed">Analysis gets scattered across notebooks and screenshots</p>
                         </div>
-                    ))}
+                    </div>
+
+                    {/* Card 2: Undocumented Strategies */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-orange-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="relative bg-midnight-950/80 border border-orange-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-orange-500/40 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center mb-4 border border-orange-500/20">
+                                <X className="w-5 h-5 text-orange-400" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-2">Undocumented Strategies</h3>
+                            <p className="text-slate-400 text-sm leading-relaxed">Strategies remain in the head, not documented</p>
+                        </div>
+                    </div>
+
+                    {/* Card 3: Forgotten Setups */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="relative bg-midnight-950/80 border border-yellow-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-yellow-500/40 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-4 border border-yellow-500/20">
+                                <X className="w-5 h-5 text-yellow-400" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-2">Forgotten Setups</h3>
+                            <p className="text-slate-400 text-sm leading-relaxed">Good setups are forgotten</p>
+                        </div>
+                    </div>
+
+                    {/* Card 4: Repeated Mistakes */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-red-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="relative bg-midnight-950/80 border border-red-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-red-500/40 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center mb-4 border border-red-500/20">
+                                <X className="w-5 h-5 text-red-400" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-2">Repeated Mistakes</h3>
+                            <p className="text-slate-400 text-sm leading-relaxed">Mistakes repeat without awareness</p>
+                        </div>
+                    </div>
+
+                    {/* Card 5: Emotional Trading */}
+                    <div className="relative group">
+                        <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-orange-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="relative bg-midnight-950/80 border border-orange-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-orange-500/40 transition-all">
+                            <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center mb-4 border border-orange-500/20">
+                                <X className="w-5 h-5 text-orange-400" />
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-2">Emotional Trading</h3>
+                            <p className="text-slate-400 text-sm leading-relaxed">Trades happen emotionally, not systematically</p>
+                        </div>
+                    </div>
                 </div>
 
                 {/* Closing Statement */}
