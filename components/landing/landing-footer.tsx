@@ -32,7 +32,24 @@ export function LandingFooter() {
                         </div>
                     </div>
 
-                    {/* Navigation columns removed for now */}
+                    {/* Quick Links */}
+                    <div>
+                        <h3 className="text-white font-bold mb-4">Quick Links</h3>
+                        <ul className="space-y-2">
+                            <li><Link href="#how-it-works" className="text-slate-400 hover:text-gold-400 transition-colors">How It Works</Link></li>
+                            <li><Link href="/auth/register" className="text-slate-400 hover:text-gold-400 transition-colors">Get Started</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Legal */}
+                    <div>
+                        <h3 className="text-white font-bold mb-4">Legal</h3>
+                        <ul className="space-y-2">
+                            <li><Link href="/legal/disclaimer" className="text-slate-400 hover:text-gold-400 transition-colors">Disclaimer</Link></li>
+                            <li><Link href="/legal/privacy" className="text-slate-400 hover:text-gold-400 transition-colors">Privacy Policy</Link></li>
+                            <li><Link href="/legal/terms" className="text-slate-400 hover:text-gold-400 transition-colors">Terms & Conditions</Link></li>
+                        </ul>
+                    </div>
                 </div>
 
                 {/* Bottom Bar */}

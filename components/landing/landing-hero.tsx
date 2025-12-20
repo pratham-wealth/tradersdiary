@@ -55,25 +55,15 @@ export function LandingHero() {
                         </Link>
                     </div>
 
-                    {/* Trust Indicators */}
-                    <div className="pt-12 flex flex-wrap items-center justify-center gap-8 text-slate-500 text-sm font-medium animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            <span>No Live Data Pulling</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            <span>Simple Interface</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            <span>AES-256 Encryption</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                            <span>Mobile Optimized</span>
-                        </div>
-                    </div>
+                    {/* Disclaimer Link */}
+                    <p className="text-xs text-slate-500 text-center max-w-md mx-auto animate-in fade-in duration-700 delay-400">
+                        By signing up, you agree to our{' '}
+                        <a href="/legal/terms" className="text-slate-400 hover:text-gold-400 underline transition-colors">Terms & Conditions</a>
+                        {' '}and{' '}
+                        <a href="/legal/privacy" className="text-slate-400 hover:text-gold-400 underline transition-colors">Privacy Policy</a>.
+                        {' '}Read our{' '}
+                        <a href="/legal/disclaimer" className="text-slate-400 hover:text-gold-400 underline transition-colors">Disclaimer</a>.
+                    </p>
                 </div>
 
                 {/* Hero Dashboard Preview with Glass/Tilt Effect */}
