@@ -17,6 +17,7 @@ export function LandingTestimonials() {
                         {
                             name: "Alex M.",
                             role: "Forex Scalper",
+                            subtitle: "Data Over Feelings",
                             text: "Before Traders Diary, I was just guessing. The strategy tagging feature specifically helped me realize my 'Asian Session Breakout' had a 30% win rate. Dropped it and my PL doubled.",
                             initials: "AM",
                             color: "bg-blue-500"
@@ -24,6 +25,7 @@ export function LandingTestimonials() {
                         {
                             name: "Vikram M.",
                             role: "Equity Trader",
+                            subtitle: "A Personal Risk Manager",
                             text: "The morning routine checklist is non-negotiable for me now. I don't take a single trade until I've checked every box. This app acts like my personal risk manager.",
                             initials: "VM",
                             color: "bg-orange-500"
@@ -31,6 +33,7 @@ export function LandingTestimonials() {
                         {
                             name: "David R.",
                             role: "Swing Trader",
+                            subtitle: "Clean & Focused",
                             text: "Cleanest journal I've used. Most apps are too cluttered. This gives me exactly what I need: Charts, Rules, and Data. The dark mode is also easy on the eyes.",
                             initials: "DR",
                             color: "bg-emerald-500"
@@ -46,6 +49,10 @@ export function LandingTestimonials() {
                                     <Star key={j} className="w-4 h-4 fill-gold-400 text-gold-400" />
                                 ))}
                             </div>
+
+                            <p className="text-white font-bold text-lg mb-3">
+                                "{testimonial.subtitle}"
+                            </p>
 
                             <p className="text-slate-300 mb-8 leading-relaxed relative z-10">
                                 &quot;{testimonial.text}&quot;
