@@ -39,12 +39,12 @@ export function LandingWhatIsIt() {
                 </div>
 
                 {/* Closing Statement */}
-                <div className="mt-16 text-center">
-                    <p className="text-2xl text-white font-bold mb-2">
-                        This is not just a journal.
+                <div className="mt-16 text-center space-y-4">
+                    <p className="text-slate-500 text-sm">
+                        This is not a signal platform. This is not an advisory service.
                     </p>
-                    <p className="text-xl text-gold-400 font-semibold">
-                        It's a mirror of your trading mind — organized and searchable.
+                    <p className="text-2xl text-white font-bold">
+                        It is your <span className="text-gold-400">personal trading database</span>.
                     </p>
                 </div>
             </div>

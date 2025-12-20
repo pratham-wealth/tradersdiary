@@ -29,60 +29,54 @@ export function LandingProblem() {
                 </div>
 
                 {/* Problem Cards */}
-                <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    {/* Problem 1 */}
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-red-500/20 to-orange-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-950/80 border border-red-500/20 rounded-2xl p-8 backdrop-blur-sm hover:border-red-500/40 transition-all">
-                            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
-                                <X className="w-6 h-6 text-red-400" />
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {[
+                        {
+                            title: "Scattered Analysis",
+                            desc: "Analysis gets scattered across notebooks and screenshots",
+                            color: "red"
+                        },
+                        {
+                            title: "Undocumented Strategies",
+                            desc: "Strategies remain in the head, not documented",
+                            color: "orange"
+                        },
+                        {
+                            title: "Forgotten Setups",
+                            desc: "Good setups are forgotten",
+                            color: "yellow"
+                        },
+                        {
+                            title: "Repeated Mistakes",
+                            desc: "Mistakes repeat without awareness",
+                            color: "red"
+                        },
+                        {
+                            title: "Emotional Trading",
+                            desc: "Trades happen emotionally, not systematically",
+                            color: "orange"
+                        }
+                    ].map((problem, i) => (
+                        <div key={i} className="relative group">
+                            <div className={`absolute -inset-1 bg-gradient-to-r from-${problem.color}-500/20 to-${problem.color}-600/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
+                            <div className={`relative bg-midnight-950/80 border border-${problem.color}-500/20 rounded-2xl p-6 backdrop-blur-sm hover:border-${problem.color}-500/40 transition-all`}>
+                                <div className={`w-10 h-10 rounded-xl bg-${problem.color}-500/10 flex items-center justify-center mb-4 border border-${problem.color}-500/20`}>
+                                    <X className={`w-5 h-5 text-${problem.color}-400`} />
+                                </div>
+                                <h3 className="text-lg font-bold text-white mb-2">{problem.title}</h3>
+                                <p className="text-slate-400 text-sm leading-relaxed">{problem.desc}</p>
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Scattered Analysis</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Screenshots, notebooks, and files <span className="text-red-400 font-medium">everywhere</span>.
-                                Missed opportunities because levels and setups were <span className="text-red-400 font-medium">forgotten</span>.
-                            </p>
                         </div>
-                    </div>
-
-                    {/* Problem 2 */}
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-yellow-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-950/80 border border-orange-500/20 rounded-2xl p-8 backdrop-blur-sm hover:border-orange-500/40 transition-all">
-                            <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6 border border-orange-500/20">
-                                <X className="w-6 h-6 text-orange-400" />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Forgotten Strategies</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Strategies remembered <span className="text-orange-400 font-medium">vaguely</span>, not documented clearly.
-                                No way to know which actually <span className="text-orange-400 font-medium">work</span>.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Problem 3 */}
-                    <div className="relative group">
-                        <div className="absolute -inset-1 bg-gradient-to-r from-yellow-500/20 to-red-500/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-950/80 border border-yellow-500/20 rounded-2xl p-8 backdrop-blur-sm hover:border-yellow-500/40 transition-all">
-                            <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-6 border border-yellow-500/20">
-                                <X className="w-6 h-6 text-yellow-400" />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Lost Books & Resources</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Downloaded books <span className="text-yellow-400 font-medium">lost in folders</span>, never found when needed.
-                                No structured way to <span className="text-yellow-400 font-medium">review and improve</span>.
-                            </p>
-                        </div>
-                    </div>
+                    ))}
                 </div>
 
                 {/* Closing Statement */}
                 <div className="mt-16 text-center space-y-4">
-                    <p className="text-xl md:text-2xl text-white font-medium">
-                        The Traders Diary was created to solve <span className="text-gold-400">exactly this</span>.
+                    <p className="text-xl md:text-2xl text-slate-400 font-light italic max-w-2xl mx-auto">
+                        "Without a structured record, learning stops."
                     </p>
-                    <p className="text-lg text-slate-400 max-w-3xl mx-auto">
-                        It replaces messy notebooks, scattered screenshots, and forgotten strategies with a <span className="text-white font-medium">clean, searchable, structured trading database</span> — built for serious traders who want to grow.
+                    <p className="text-2xl text-white font-bold">
+                        The Traders Diary was created to solve <span className="text-gold-400">this exact problem</span>.
                     </p>
                 </div>
             </div>

@@ -24,21 +24,25 @@ export function LandingHero() {
 
                     {/* Hero Text */}
                     <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tight text-white leading-[1.1] animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100 drop-shadow-2xl">
-                        Stop Gambling. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-gold-500 to-amber-500">Start Trading.</span>
+                        The Traders Diary
                     </h1>
 
-                    <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 font-light">
-                        Your Complete <span className="text-white font-medium">Trading Journal, Strategy Vault & Learning Companion</span> — All in One App
+                    <p className="text-2xl md:text-3xl text-gold-400 font-bold animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
+                        A disciplined trading system — not just a journal.
                     </p>
 
-                    <p className="text-lg md:text-xl text-gold-400 font-semibold animate-in fade-in slide-in-from-bottom-8 duration-700 delay-250">
-                        Record. Track. Learn. Improve. Trade with Discipline.
+                    <p className="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-250 font-light">
+                        Most traders don't fail because of bad strategies. <br />
+                        They fail because they <span className="text-white font-medium">don't track, review, and learn</span>.
                     </p>
 
-                    <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-                        👉 One place. One system. One disciplined trading journey.
-                    </p>
+                    <div className="flex flex-wrap justify-center gap-4 text-base md:text-lg text-slate-300 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                        <span>👉 Record analysis</span>
+                        <span>👉 Track strategies</span>
+                        <span>👉 Log trades</span>
+                        <span>👉 Review performance</span>
+                        <span>👉 Improve consistently</span>
+                    </div>
 
                     {/* CTAs */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
