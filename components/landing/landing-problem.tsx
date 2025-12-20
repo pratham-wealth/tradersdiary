@@ -16,13 +16,15 @@ export function LandingProblem() {
                     </div>
 
                     <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                        Why Do Most Traders <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500">Never Become Profitable?</span>
+                        Why The Traders Diary Exists
                     </h2>
 
+                    <p className="text-2xl text-red-400 font-bold max-w-3xl mx-auto leading-relaxed">
+                        Every trader knows this problem.
+                    </p>
+
                     <p className="text-xl text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
-                        It isn't a lack of charts. <span className="text-white font-medium">It's a lack of process.</span>
-                        <br />Most traders are stuck in a cycle of:
+                        Trading becomes <span className="text-white font-medium">emotional and unstructured</span> — not because of lack of skill, but <span className="text-red-400 font-semibold">lack of system</span>.
                     </p>
                 </div>
 
@@ -35,10 +37,10 @@ export function LandingProblem() {
                             <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mb-6 border border-red-500/20">
                                 <X className="w-6 h-6 text-red-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Impulsive Execution</h3>
+                            <h3 className="text-xl font-bold text-white mb-3">Scattered Analysis</h3>
                             <p className="text-slate-400 text-sm leading-relaxed">
-                                Taking trades based on <span className="text-red-400 font-medium">feelings</span>, not rules.
-                                FOMO entries. Revenge trading. No plan, just reactions.
+                                Screenshots, notebooks, and files <span className="text-red-400 font-medium">everywhere</span>.
+                                Missed opportunities because levels and setups were <span className="text-red-400 font-medium">forgotten</span>.
                             </p>
                         </div>
                     </div>
@@ -50,10 +52,10 @@ export function LandingProblem() {
                             <div className="w-12 h-12 rounded-xl bg-orange-500/10 flex items-center justify-center mb-6 border border-orange-500/20">
                                 <X className="w-6 h-6 text-orange-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Scattered Data</h3>
+                            <h3 className="text-xl font-bold text-white mb-3">Forgotten Strategies</h3>
                             <p className="text-slate-400 text-sm leading-relaxed">
-                                Analysis lost in Telegram chats, messy Excel sheets, and <span className="text-orange-400 font-medium">mental notes</span>.
-                                No single source of truth.
+                                Strategies remembered <span className="text-orange-400 font-medium">vaguely</span>, not documented clearly.
+                                No way to know which actually <span className="text-orange-400 font-medium">work</span>.
                             </p>
                         </div>
                     </div>
@@ -65,22 +67,22 @@ export function LandingProblem() {
                             <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mb-6 border border-yellow-500/20">
                                 <X className="w-6 h-6 text-yellow-400" />
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">Strategy Hopping</h3>
+                            <h3 className="text-xl font-bold text-white mb-3">Lost Books & Resources</h3>
                             <p className="text-slate-400 text-sm leading-relaxed">
-                                Changing systems every week because you don't know <span className="text-yellow-400 font-medium">what actually works</span>.
-                                Chasing gurus instead of tracking data.
+                                Downloaded books <span className="text-yellow-400 font-medium">lost in folders</span>, never found when needed.
+                                No structured way to <span className="text-yellow-400 font-medium">review and improve</span>.
                             </p>
                         </div>
                     </div>
                 </div>
 
                 {/* Closing Statement */}
-                <div className="mt-16 text-center">
-                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                        You don't need another indicator.
-                    </h3>
-                    <p className="text-xl text-gold-400 font-bold">
-                        You need a Headquarters.
+                <div className="mt-16 text-center space-y-4">
+                    <p className="text-xl md:text-2xl text-white font-medium">
+                        The Traders Diary was created to solve <span className="text-gold-400">exactly this</span>.
+                    </p>
+                    <p className="text-lg text-slate-400 max-w-3xl mx-auto">
+                        It replaces messy notebooks, scattered screenshots, and forgotten strategies with a <span className="text-white font-medium">clean, searchable, structured trading database</span> — built for serious traders who want to grow.
                     </p>
                 </div>
             </div>

@@ -28,8 +28,16 @@ export function LandingHero() {
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 via-gold-500 to-amber-500">Start Trading.</span>
                     </h1>
 
-                    <p className="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 font-light">
-                        The <span className="text-white font-medium">professional command center</span> for journaling trades, analyzing psychology, and executing with precision.
+                    <p className="text-xl md:text-2xl text-slate-400 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200 font-light">
+                        Your Complete <span className="text-white font-medium">Trading Journal, Strategy Vault & Learning Companion</span> — All in One App
+                    </p>
+
+                    <p className="text-lg md:text-xl text-gold-400 font-semibold animate-in fade-in slide-in-from-bottom-8 duration-700 delay-250">
+                        Record. Track. Learn. Improve. Trade with Discipline.
+                    </p>
+
+                    <p className="text-base md:text-lg text-slate-500 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
+                        👉 One place. One system. One disciplined trading journey.
                     </p>
 
                     {/* CTAs */}

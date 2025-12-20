@@ -10,11 +10,11 @@ export function LandingFeatures() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-24 space-y-6">
                     <h2 className="text-4xl md:text-5xl font-black text-white tracking-tight">
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">One Ecosystem.</span> <br />
-                        <span className="text-gold-400">Total Control.</span>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-500">Key Features That Make Traders</span> <br />
+                        <span className="text-gold-400">More Consistent</span>
                     </h2>
-                    <p className="text-slate-400 text-xl max-w-2xl mx-auto font-light">
-                        The Traders Diary isn't just a logbook. It is a <span className="text-white font-medium">mirror of your trading mind</span>, designed to enforce discipline where it matters most.
+                    <p className="text-slate-400 text-xl max-w-3xl mx-auto font-light">
+                        Everything you need to transform chaos into structure, emotions into discipline, and guesses into data-driven decisions.
                     </p>
                 </div>
 
@@ -28,10 +28,13 @@ export function LandingFeatures() {
                             <div className="w-12 h-12 rounded-xl bg-gold-400/10 flex items-center justify-center mb-6 border border-gold-400/20">
                                 <LayoutDashboard className="w-6 h-6 text-gold-400" />
                             </div>
-                            <h3 className="text-3xl font-bold text-white mb-2">Master Your Edge</h3>
-                            <p className="text-lg text-gold-400 font-semibold mb-2">The Daily Ritual</p>
-                            <p className="text-slate-400 text-lg mb-8 max-w-md">
-                                Start every session with a <span className="text-white font-medium">clear mind</span>. The dashboard forces you to review your rules before you ever look at a chart. Zero noise. Pure focus.
+                            <h3 className="text-3xl font-bold text-white mb-2">Structured Market Analysis</h3>
+                            <p className="text-lg text-gold-400 font-semibold mb-2">One Place for Everything</p>
+                            <p className="text-slate-400 text-lg mb-4 max-w-md">
+                                Record your analysis for <span className="text-white font-medium">any asset</span>: Stocks, Forex, Crypto, Commodities, Indices.
+                            </p>
+                            <p className="text-slate-400 text-sm mb-8 max-w-md">
+                                Attach charts, write explanations, mention levels, patterns, indicators — and <span className="text-gold-400 font-medium">never lose your analysis again</span>. Every analysis becomes a permanent learning asset.
                             </p>
 
                             <div className="flex-1 w-full relative rounded-t-xl overflow-hidden border-t border-l border-r border-white/10 shadow-2xl translate-y-4 group-hover:translate-y-2 transition-transform duration-500">
