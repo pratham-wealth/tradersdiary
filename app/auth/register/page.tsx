@@ -4,7 +4,7 @@ import { signUp, signInWithGoogle } from '../actions';
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Mail, Lock, User as UserIcon, ArrowRight, CheckCircle, TrendingUp, Shield, Phone } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, ArrowRight, CheckCircle, Shield, Phone } from 'lucide-react';
 
 export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
@@ -86,11 +86,11 @@ export default function RegisterPage() {
 
                 <div className="relative z-10 p-12 flex flex-col justify-between h-full text-white">
                     <div>
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="p-2 bg-midnight-800 border border-midnight-700 rounded-lg glow-gold">
-                                <TrendingUp className="w-8 h-8 text-gold-400" />
+                        <div className="flex items-center gap-3 mb-6">
+                            <div className="relative w-12 h-12">
+                                <img src="/logo.png" alt="The Traders Diary" className="w-full h-full object-contain" />
                             </div>
-                            <span className="text-2xl font-bold tracking-tight text-white">Traders Diary</span>
+                            <span className="text-3xl font-bold tracking-tight text-white">The Traders Diary</span>
                         </div>
                         <h2 className="text-5xl font-bold leading-tight mb-4 tracking-tight">
                             Start Your <br />

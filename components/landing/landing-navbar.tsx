@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { TrendingUp, ArrowRight, Menu } from 'lucide-react';
+import { ArrowRight, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export function LandingNavbar() {
@@ -19,18 +19,19 @@ export function LandingNavbar() {
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-3 group">
-                        <div className="p-2 bg-gradient-to-br from-gold-400/20 to-gold-600/20 border border-gold-400/30 rounded-xl group-hover:scale-105 transition-transform">
-                            <TrendingUp className="w-5 h-5 text-gold-400" />
+                        <div className="relative w-10 h-10 group-hover:scale-105 transition-transform">
+                            <img src="/logo.png" alt="The Traders Diary" className="w-full h-full object-contain" />
                         </div>
-                        <span className="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent group-hover:to-white transition-all">
-                            Traders Diary
+                        <span className="text-2xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent group-hover:to-white transition-all">
+                            The Traders Diary
                         </span>
                     </Link>
 
                     {/* Desktop Nav */}
                     <div className="hidden md:flex items-center gap-8 bg-white/5 px-6 py-2 rounded-full border border-white/5 backdrop-blur-md">
                         <Link href="#features" className="text-sm font-medium text-slate-400 hover:text-gold-400 transition-colors">Features</Link>
-                        <Link href="#how-it-works" className="text-sm font-medium text-slate-400 hover:text-gold-400 transition-colors">How it Works</Link>
+                        <Link href="/how-it-works" className="text-sm font-medium text-slate-400 hover:text-gold-400 transition-colors">How it Works</Link>
+                        <Link href="#faq" className="text-sm font-medium text-slate-400 hover:text-gold-400 transition-colors">FAQ</Link>
                     </div>
 
                     {/* Auth Buttons */}

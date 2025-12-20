@@ -80,7 +80,7 @@ export function LandingSecurity() {
 
                 {/* Trust Badge */}
                 <div className="mt-16 text-center">
-                    <p className="text-slate-500 text-sm font-medium">
+                    <p className="text-3xl md:text-4xl text-gold-400 font-bold">
                         🔒 Your edge stays your edge. Always.
                     </p>
                 </div>

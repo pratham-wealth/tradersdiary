@@ -19,6 +19,7 @@ export function LandingWhatIsIt() {
                     </p>
                 </div>
 
+
                 {/* What It Helps You Do */}
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
                     {[
@@ -33,7 +34,7 @@ export function LandingWhatIsIt() {
                             <div className="w-10 h-10 rounded-lg bg-gold-400/10 flex items-center justify-center border border-gold-400/20 group-hover:scale-110 transition-transform shrink-0">
                                 <item.icon className="w-5 h-5 text-gold-400" />
                             </div>
-                            <p className="text-slate-300 text-sm leading-relaxed">{item.text}</p>
+                            <p className="text-slate-300 text-base leading-relaxed">{item.text}</p>
                         </div>
                     ))}
                 </div>
