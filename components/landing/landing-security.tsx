@@ -24,12 +24,12 @@ export function LandingSecurity() {
                     {/* Feature 1: Encryption */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-blue-400/30 transition-all">
+                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-blue-400/30 transition-all h-full flex flex-col min-h-[280px]">
                             <div className="w-16 h-16 mx-auto rounded-2xl bg-blue-500/10 flex items-center justify-center mb-6 border border-blue-500/20 group-hover:scale-110 transition-transform">
                                 <Lock className="w-8 h-8 text-blue-400" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-3">AES-256 Encryption</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-400 text-sm leading-relaxed flex-1">
                                 The same security standard used by <span className="text-blue-400 font-medium">banks</span> to protect your data.
                             </p>
                         </div>
@@ -38,12 +38,12 @@ export function LandingSecurity() {
                     {/* Feature 2: Cloud Sync */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/10 to-teal-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-cyan-400/30 transition-all">
+                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-cyan-400/30 transition-all h-full flex flex-col min-h-[280px]">
                             <div className="w-16 h-16 mx-auto rounded-2xl bg-cyan-500/10 flex items-center justify-center mb-6 border border-cyan-500/20 group-hover:scale-110 transition-transform">
                                 <Cloud className="w-8 h-8 text-cyan-400" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-3">Cloud Sync</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-400 text-sm leading-relaxed flex-1">
                                 Access your journal from <span className="text-cyan-400 font-medium">any device</span>—Mobile, Tablet, or Desktop.
                             </p>
                         </div>
@@ -52,27 +52,27 @@ export function LandingSecurity() {
                     {/* Feature 3: Mobile Optimized */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-teal-500/10 to-emerald-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-teal-400/30 transition-all">
+                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-teal-400/30 transition-all h-full flex flex-col min-h-[280px]">
                             <div className="w-16 h-16 mx-auto rounded-2xl bg-teal-500/10 flex items-center justify-center mb-6 border border-teal-500/20 group-hover:scale-110 transition-transform">
                                 <Smartphone className="w-8 h-8 text-teal-400" />
                             </div>
                             <h3 className="text-lg font-bold text-white mb-3">Mobile Optimized</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
+                            <p className="text-slate-400 text-sm leading-relaxed flex-1">
                                 Log trades <span className="text-teal-400 font-medium">on the go</span> without losing functionality.
                             </p>
                         </div>
                     </div>
 
-                    {/* Feature 4: No Data Selling */}
+                    {/* Feature 4: Your Data Stays Safe */}
                     <div className="relative group">
                         <div className="absolute -inset-1 bg-gradient-to-r from-emerald-500/10 to-green-500/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-emerald-400/30 transition-all">
+                        <div className="relative bg-midnight-900/50 border border-white/10 rounded-2xl p-8 text-center hover:bg-midnight-900 hover:border-emerald-400/30 transition-all h-full flex flex-col min-h-[280px]">
                             <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6 border border-emerald-500/20 group-hover:scale-110 transition-transform">
                                 <Shield className="w-8 h-8 text-emerald-400" />
                             </div>
-                            <h3 className="text-lg font-bold text-white mb-3">No Data Selling</h3>
-                            <p className="text-slate-400 text-sm leading-relaxed">
-                                Your trade data is <span className="text-emerald-400 font-medium">yours</span>. We never sell it to brokers or third parties.
+                            <h3 className="text-lg font-bold text-white mb-3">Your Data Stays Safe</h3>
+                            <p className="text-slate-400 text-sm leading-relaxed flex-1">
+                                Your trade data is <span className="text-emerald-400 font-medium">yours</span>. No one can access it, as the system is <span className="text-emerald-400 font-medium">not linked to any brokers</span>.
                             </p>
                         </div>
                     </div>
