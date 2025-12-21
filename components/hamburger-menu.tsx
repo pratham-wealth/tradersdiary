@@ -201,7 +201,7 @@ export function HamburgerMenu() {
                         <p className="text-[11px] font-medium text-slate-400">Created by : ARP Infotech</p>
 
                         <div className="flex items-center justify-center gap-2 text-[10px] text-slate-500 py-0.5">
-                            <span>Traders Diary (V 1.0)</span>
+                            <span>The Traders Diary (V 1.0)</span>
                             <span>•</span>
                             <span>Dec. 2025</span>
                         </div>

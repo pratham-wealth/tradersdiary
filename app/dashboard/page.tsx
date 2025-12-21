@@ -1,7 +1,7 @@
 import { getTodaysDiary, getDashboardStats, getUserSettings } from './actions';
 import { getLatestAnnouncement } from './announcements/actions';
 import { AnnouncementBanner } from '@/components/announcement-banner';
-import DashboardFocusList from '@/components/dashboard-focus-list';
+import { DashboardTodaysFocus } from '@/components/dashboard-todays-focus';
 import { DashboardMarketOutlook } from '@/components/dashboard-market-outlook';
 import { DailyRoutine } from '@/components/daily-routine';
 import { DashboardTimeDisplay } from '@/components/dashboard-time-display';
@@ -69,22 +69,11 @@ export default async function DashboardPage() {
             {/* Permanent Daily Routine Checklist */}
             <DailyRoutine />
 
-            {/* Today's Focus (Moved Up) */}
-            <div className="bg-midnight-900/50 border border-midnight-800 rounded-xl p-4 md:p-6 text-white shadow-xl relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gold-400/5 blur-3xl rounded-full -mr-10 -mt-10 group-hover:bg-gold-400/10 transition-colors"></div>
-
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 relative z-10">
-                    <h3 className="font-bold text-lg text-white">Today&apos;s Focus</h3>
-                    <a href="/dashboard/diary" className="text-sm font-medium text-gold-400 hover:text-gold-300">
-                        Manage Plan &rarr;
-                    </a>
-                </div>
-
-                <DashboardFocusList
-                    initialTasks={diary?.things_to_do || []}
-                    date={diary?.entry_date || new Date().toISOString().split('T')[0]}
-                />
-            </div>
+            {/* Today's Focus (Collapsible) */}
+            <DashboardTodaysFocus
+                initialTasks={diary?.things_to_do || []}
+                date={diary?.entry_date || new Date().toISOString().split('T')[0]}
+            />
 
             {/* Market Analysis (Expandable) */}
             <DashboardMarketOutlook analysis={diary?.market_analysis ?? null} />
